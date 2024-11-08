@@ -1,4 +1,7 @@
 package lk.ijse.demo.dao;
 
-public interface FieldDAO {
+import lk.ijse.demo.entity.impl.FieldEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface FieldDAO extends JpaRepository<FieldEntity,String> {
 }
