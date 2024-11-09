@@ -20,6 +20,13 @@ public class FieldEntity implements SuperEntity {
     private String fieldName;
     private Point fieldLocation;
     private Double extentSizeOfTheField;
+
+    @OneToMany(mappedBy = "cropCode")
+    private List<CropEntity> crops;
+
+    @OneToMany(mappedBy = "staffId")
+    private List<StaffEntity> staff;
+
     @Lob
     private String fieldImage1;
     @Lob

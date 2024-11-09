@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class FieldController {
     @Autowired
     private FieldService fieldService;
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void>addFeild(){
-        return ResponseEntity.ok().build();
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void>addFeild(
+
+    ){
+
     }
 }
