@@ -1,6 +1,6 @@
 package lk.ijse.demo.controller;
 
-import lk.ijse.demo.service.FielsService;
+import lk.ijse.demo.service.FieldService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/v1/field")
 public class FieldController {
     @Autowired
-    private FielsService fielsService;
+    private FieldService fieldService;
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void>addFeild(){
         return ResponseEntity.ok().build();
