@@ -2,6 +2,7 @@ package lk.ijse.demo.entity.impl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lk.ijse.demo.entity.SuperEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "crop")
-public class CropEntity {
+public class CropEntity implements SuperEntity {
     @Id
     private String cropCode;
     private String cropName;
