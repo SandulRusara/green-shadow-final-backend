@@ -1,9 +1,9 @@
 package lk.ijse.demo.dto.impl;
 
-import com.example.demo.dto.FieldStatus;
-import com.example.demo.dto.SuperDTO;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Id;
+import lk.ijse.demo.dto.FieldStatus;
 import lk.ijse.demo.dto.SuperDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;

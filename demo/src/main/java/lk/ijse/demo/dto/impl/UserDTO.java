@@ -1,10 +1,10 @@
 package lk.ijse.demo.dto.impl;
 
-import com.example.demo.dto.SuperDTO;
-import com.example.demo.dto.UserStatus;
-import com.example.demo.entity.Role;
+
 import jakarta.persistence.Id;
 import lk.ijse.demo.dto.SuperDTO;
+import lk.ijse.demo.dto.UserStatus;
+import lk.ijse.demo.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
