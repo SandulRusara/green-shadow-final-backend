@@ -1,9 +1,10 @@
-package lk.ijse.demo.dto;
+package lk.ijse.demo.dto.impl;
 
 import com.example.demo.dto.CropStatus;
 import com.example.demo.dto.SuperDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Id;
+import lk.ijse.demo.dto.SuperDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

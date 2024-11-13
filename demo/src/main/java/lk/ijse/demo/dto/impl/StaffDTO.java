@@ -1,10 +1,11 @@
-package lk.ijse.demo.dto;
+package lk.ijse.demo.dto.impl;
 
 import com.example.demo.dto.StaffStatus;
 import com.example.demo.dto.SuperDTO;
 import com.example.demo.entity.Gender;
 import com.example.demo.entity.Role;
 import jakarta.persistence.Id;
+import lk.ijse.demo.dto.SuperDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class StaffDTO implements SuperDTO , StaffStatus {
+public class StaffDTO implements SuperDTO, StaffStatus {
     @Id
     private String memberCode;
     private String firstName;

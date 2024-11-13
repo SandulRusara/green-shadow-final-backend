@@ -8,8 +8,5 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class FieldServiceImpl implements FieldService {
 
-    @Override
-    public void saveField(FieldDTO fieldDTO) {
 
-    }
 }
