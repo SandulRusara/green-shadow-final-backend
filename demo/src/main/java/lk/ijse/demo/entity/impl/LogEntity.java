@@ -10,7 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "monitoringLogServices")
+@Table(name = "logs")
 public class LogEntity {
     @Id
     private String logCode;
