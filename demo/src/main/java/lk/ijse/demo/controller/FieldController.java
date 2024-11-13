@@ -2,6 +2,8 @@ package lk.ijse.demo.controller;
 
 import lk.ijse.demo.dto.FieldDTO;
 import lk.ijse.demo.service.FieldService;
+import lk.ijse.demo.util.IdGenerate;
+import lk.ijse.demo.util.PotoEncode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,8 +31,8 @@ public class FieldController {
 
         try {
             String fieldId = IdGenerate.generateFieldId();
-            String img1 = PicEncorder.generateProfilePicToBase64(fieldImg1);
-            String img2 = PicEncorder.generateProfilePicToBase64(fieldImg2);
+            String img1 = PotoEncode.generateProfilePicToBase64(fieldImg1);
+            String img2 = PotoEncode.generateProfilePicToBase64(fieldImg2);
 
             FieldDTO fieldDTO = new FieldDTO();
             fieldDTO.setFieldCode(fieldId);
