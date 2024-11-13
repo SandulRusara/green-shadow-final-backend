@@ -5,14 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
 import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
 @Table(name = "monitoringLogServices")
-public class MonitoringLogEntity {
+public class LogEntity {
     @Id
     private String logCode;
     private String date;
