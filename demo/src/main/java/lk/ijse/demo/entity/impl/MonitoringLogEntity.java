@@ -15,19 +15,24 @@ import java.util.List;
 public class MonitoringLogEntity {
     @Id
     private String logCode;
-
-    private Date logDate;
+    private String date;
     private String logDetails;
-
-    @Lob
+    @Column(columnDefinition = "LONGTEXT")
     private String observedImage;
-
-    @OneToMany(mappedBy = "fieldCode")
-    private List<FieldEntity> field;
-
-    @OneToMany(mappedBy = "cropCode")
-    private List<CropEntity> crop;
-
-    @OneToMany(mappedBy = "staffId")
-    private List<StaffEntity> staff;
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(
+            name = "staff_log_details",
+            joinColumns = @JoinColumn(name = "logCode"),
+            inverseJoinColumns = @JoinColumn(name = "memberCode")
+    )
+    private List<StaffEntity> staffList;
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(
+            name = "log_crop_details",
+            joinColumns = @JoinColumn(name = "logCode"),
+            inverseJoinColumns = @JoinColumn(name = "cropCode")
+    )
+    private List<CropEntity> cropList;
+    @ManyToMany(mappedBy = "logList",cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    private List<FieldEntity> fieldList;
 }
