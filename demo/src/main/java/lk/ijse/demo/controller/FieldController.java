@@ -29,7 +29,6 @@ public class FieldController {
             @RequestPart("extentSize") String extentSize,
             @RequestPart("fieldImage1") MultipartFile fieldImage1,
             @RequestPart("fieldImage2") MultipartFile fieldImage2,
-//            @RequestPart("staffList") List<StaffDTO> staffList,
             @RequestPart("cropList") List<CropDTO> cropList
     ) {
         try {
@@ -39,9 +38,8 @@ public class FieldController {
             fieldDTO.setExtentSize(Double.parseDouble(extentSize));
             fieldDTO.setFieldImage1(IdGenerate.imageBase64(fieldImage1.getBytes()));
             fieldDTO.setFieldImage2(IdGenerate.imageBase64(fieldImage2.getBytes()));
-//            fieldDTO.setStaffList(staffList);
             fieldDTO.setCropList(cropList);
-            fieldService.s(fieldDTO);
+            fieldService.saveField(fieldDTO);
             return new ResponseEntity<>(HttpStatus.CREATED);
         }catch (DataPersistException e){
             e.printStackTrace();
