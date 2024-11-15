@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lk.ijse.demo.dao.FieldDAO;
 import lk.ijse.demo.dto.impl.FieldDTO;
 import lk.ijse.demo.service.FieldService;
+import lk.ijse.demo.util.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,9 @@ import org.springframework.stereotype.Service;
 public class FieldServiceImpl implements FieldService {
         @Autowired
         private FieldDAO fieldDAO;
+
+        @Autowired
+        private Mapping mapping;
 
 
     @Override
