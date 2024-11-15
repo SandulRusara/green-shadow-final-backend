@@ -25,6 +25,7 @@ dependencies {
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+	implementation group: 'org.modelmapper', name: 'modelmapper', version:'3.2.1'
 }
 
 tasks.named('test') {
