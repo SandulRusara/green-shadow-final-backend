@@ -19,7 +19,7 @@ public class FieldDTO implements SuperDTO, FieldStatus {
     @Id
     private String fieldCode;
     private String name;
-    private Point location;
+    private String location;
     private double extentSize;
     private String fieldImage1;
     private String fieldImage2;
