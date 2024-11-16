@@ -20,7 +20,7 @@ public class VehicleEntity {
     private String category;
     private String fuelType;
     private String remark;
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne
     @JoinColumn(name = "memberCode")
     private StaffEntity staff;
 }
