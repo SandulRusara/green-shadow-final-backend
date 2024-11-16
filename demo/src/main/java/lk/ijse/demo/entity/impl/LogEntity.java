@@ -1,5 +1,6 @@
 package lk.ijse.demo.entity.impl;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,6 +33,7 @@ public class LogEntity {
             inverseJoinColumns = @JoinColumn(name = "cropCode")
     )
     private List<CropEntity> cropList;
+    @JsonIgnore
     @ManyToMany(mappedBy = "logList",cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<FieldEntity> fieldList;
 }
