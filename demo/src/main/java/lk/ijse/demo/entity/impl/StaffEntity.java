@@ -36,12 +36,13 @@ public class StaffEntity {
     private String email;
     @Enumerated(EnumType.STRING)
     private Role role;
-    @OneToMany(mappedBy = "staffEntity",cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    private List<StaffEquipmentDetailsEntity> staffEquipmentDetailsList;
-    @OneToMany(mappedBy = "staff" ,cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToMany(mappedBy = "staff")
     private List<VehicleEntity> vehicleList;
-    @ManyToMany(mappedBy = "staffList" ,cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany(mappedBy = "staffList")
     private List<FieldEntity> fieldList;
-    @ManyToMany(mappedBy = "staffList" ,cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany(mappedBy = "staffList")
     private List<LogEntity> logList;
+    @OneToMany(mappedBy = "staffEntity")
+    private List<StaffEquipmentDetailsEntity> staffEquipmentDetailsList;
+
 }
