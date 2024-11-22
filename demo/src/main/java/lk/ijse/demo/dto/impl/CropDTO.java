@@ -22,8 +22,6 @@ public class CropDTO implements SuperDTO, CropStatus {
     private String category;
     private String season;
     private String cropImage;
-    @JsonIgnore
-    private List<LogDTO> logList;
-    @JsonIgnore
-    private List<FieldDTO> fieldList;
+    private List<String> logCodeList;
+    private List<String> fieldCodeList;
 }

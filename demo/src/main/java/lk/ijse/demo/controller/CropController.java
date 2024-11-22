@@ -28,7 +28,7 @@ public class CropController {
             @RequestPart("category") String category,
             @RequestPart("season") String season,
             @RequestPart("cropImage") MultipartFile cropImage,
-            @RequestPart("fieldList") List<FieldDTO> fieldList
+            @RequestPart("fieldList") List<String> fieldList
     ) {
         try{
             var cropDTO = new CropDTO();
