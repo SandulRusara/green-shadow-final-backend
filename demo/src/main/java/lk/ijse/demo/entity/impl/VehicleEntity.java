@@ -19,6 +19,7 @@ public class VehicleEntity {
     private String Name;
     private String category;
     private String fuelType;
+    private String status;
     private String remark;
     @ManyToOne
     @JoinColumn(name = "memberCode")

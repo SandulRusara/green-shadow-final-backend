@@ -23,7 +23,6 @@ public class CropEntity implements SuperEntity {
     private String season;
     @Column(columnDefinition = "LONGTEXT")
     private String cropImage;
-    @JsonIgnore
     @ManyToMany(mappedBy = "cropList")
     private List<LogEntity> logList;
     @ManyToMany(mappedBy = "cropList")

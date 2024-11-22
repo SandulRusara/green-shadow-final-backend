@@ -24,7 +24,7 @@ public class EquipmentEntity {
     private int availableCount;
     @OneToMany(mappedBy = "equipmentEntity")
     private List<StaffEquipmentDetailsEntity> staffEquipmentDetailsList;
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany
     @JoinTable(
             name = "equipment_field_details",
             joinColumns = @JoinColumn(name = "equipmentCode"),

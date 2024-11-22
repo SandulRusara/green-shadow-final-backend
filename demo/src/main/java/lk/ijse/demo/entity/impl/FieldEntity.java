@@ -29,7 +29,6 @@ public class FieldEntity implements SuperEntity {
     @JsonIgnore  // Ignore during serialization to avoid recursion
     @ManyToMany(mappedBy = "fieldList")
     private List<EquipmentEntity> equipmentsList;
-    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "field_staff_details",
@@ -37,7 +36,6 @@ public class FieldEntity implements SuperEntity {
             inverseJoinColumns = @JoinColumn(name = "memberCode")
     )
     private List<StaffEntity> staffList;
-    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "field_log_details",

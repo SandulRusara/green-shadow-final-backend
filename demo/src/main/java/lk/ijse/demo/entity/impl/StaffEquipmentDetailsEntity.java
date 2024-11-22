@@ -15,9 +15,9 @@ public class StaffEquipmentDetailsEntity {
     private String id;
     private int useEquipmentCount;
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinColumn(name = "memberCode",referencedColumnName = "memberCode",nullable = false)
+    @JoinColumn(name = "memberCode",referencedColumnName = "memberCode")
     private StaffEntity staffEntity;
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinColumn(name = "equipmentCode",referencedColumnName = "equipmentCode",nullable = false)
+    @JoinColumn(name = "equipmentCode",referencedColumnName = "equipmentCode")
     private EquipmentEntity equipmentEntity;
 }

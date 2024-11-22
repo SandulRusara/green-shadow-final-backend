@@ -19,21 +19,20 @@ public class LogEntity {
     private String logDetails;
     @Column(columnDefinition = "LONGTEXT")
     private String observedImage;
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany
     @JoinTable(
             name = "staff_log_details",
             joinColumns = @JoinColumn(name = "logCode"),
             inverseJoinColumns = @JoinColumn(name = "memberCode")
     )
     private List<StaffEntity> staffList;
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany
     @JoinTable(
             name = "log_crop_details",
             joinColumns = @JoinColumn(name = "logCode"),
             inverseJoinColumns = @JoinColumn(name = "cropCode")
     )
     private List<CropEntity> cropList;
-    @JsonIgnore
-    @ManyToMany(mappedBy = "logList",cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany(mappedBy = "logList")
     private List<FieldEntity> fieldList;
 }
