@@ -16,7 +16,7 @@ import java.util.List;
 public class EquipmentDTO implements SuperDTO, EquipmentStatus {
     @Id
     private String equipmentCode;
-    private String Name;
+    private String name;
     private String type;
     private String status;
     private int availableCount;

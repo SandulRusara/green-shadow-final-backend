@@ -1,6 +1,4 @@
 package lk.ijse.demo.controller;
-
-import lk.ijse.demo.dto.impl.CropDTO;
 import lk.ijse.demo.dto.impl.FieldDTO;
 import lk.ijse.demo.exception.DataPersistException;
 import lk.ijse.demo.service.FieldService;
@@ -20,8 +18,6 @@ import java.util.List;
 public class FieldController {
     @Autowired
     private FieldService fieldService;
-
-
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> saveField(
             @RequestPart("name") String fieldName,
@@ -29,7 +25,8 @@ public class FieldController {
             @RequestPart("extentSize") String extentSize,
             @RequestPart("fieldImage1") MultipartFile fieldImage1,
             @RequestPart("fieldImage2") MultipartFile fieldImage2,
-            @RequestPart("cropList") List<CropDTO> cropList
+            @RequestPart("staffList") List<String> staffList,
+            @RequestPart("cropList") List<String> cropList
     ) {
         try {
             var fieldDTO = new FieldDTO();
@@ -38,7 +35,8 @@ public class FieldController {
             fieldDTO.setExtentSize(Double.parseDouble(extentSize));
             fieldDTO.setFieldImage1(IdGenerate.imageBase64(fieldImage1.getBytes()));
             fieldDTO.setFieldImage2(IdGenerate.imageBase64(fieldImage2.getBytes()));
-            fieldDTO.setCropList(cropList);
+            fieldDTO.setCropCodeList(staffList);
+            fieldDTO.setCropCodeList(cropList);
             fieldService.saveField(fieldDTO);
             return new ResponseEntity<>(HttpStatus.CREATED);
         }catch (DataPersistException e){

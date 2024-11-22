@@ -19,7 +19,7 @@ public class LogDTO implements SuperDTO, LogStatus {
     private String date;
     private String logDetails;
     private String observedImage;
-    private List<StaffDTO> staffList;
-    private List<CropDTO> cropList;
-    private List<FieldDTO> fieldList;
+    private List<String> staffList;
+    private List<String> cropList;
+    private List<String> fieldList;
 }

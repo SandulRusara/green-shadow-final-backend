@@ -37,7 +37,7 @@ public class CropController {
             cropDTO.setCategory(category);
             cropDTO.setSeason(season);
             cropDTO.setCropImage(IdGenerate.imageBase64(cropImage.getBytes()));
-            cropDTO.setFieldList(fieldList);
+            cropDTO.setFieldCodeList(fieldList);
             cropService.saveCrop(cropDTO);
             return new ResponseEntity<>(HttpStatus.CREATED);
         }catch (DataPersistException e){

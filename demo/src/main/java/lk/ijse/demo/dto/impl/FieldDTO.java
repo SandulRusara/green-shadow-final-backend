@@ -23,11 +23,8 @@ public class FieldDTO implements SuperDTO, FieldStatus {
     private double extentSize;
     private String fieldImage1;
     private String fieldImage2;
-    @JsonIgnore
-    private List<EquipmentDTO> equipmentsList;
-    @JsonIgnore
-    private List<StaffDTO> staffList;
-    @JsonIgnore
-    private List<LogDTO> logList;
-    private List<CropDTO> cropList;
+    private List<String> equipmentsList;
+    private List<String> memberCodeList;
+    private List<String> logList;
+    private List<String> cropCodeList;
 }
