@@ -1,9 +1,11 @@
 package lk.ijse.demo.service.impl;
 
 import jakarta.transaction.Transactional;
+import lk.ijse.demo.dao.CropDAO;
 import lk.ijse.demo.dao.FieldDAO;
 import lk.ijse.demo.dao.StaffDAO;
 import lk.ijse.demo.dto.impl.FieldDTO;
+import lk.ijse.demo.entity.impl.CropEntity;
 import lk.ijse.demo.entity.impl.FieldEntity;
 import lk.ijse.demo.entity.impl.LogEntity;
 import lk.ijse.demo.entity.impl.StaffEntity;
@@ -25,35 +27,39 @@ public class FieldServiceImpl implements FieldService {
     private StaffDAO staffDAO;
     @Autowired
     private Mapping mapping;
+    @Autowired
+    private CropDAO cropDAO;
 
 
     @Override
     public void saveField(FieldDTO fieldDTO) {
         int number = 0;
         FieldEntity field = fieldDAO.findLastRowNative();
-        if (field != null){
+        if (field != null) {
             String[] parts = field.getFieldCode().split("-");
             number = Integer.parseInt(parts[1]);
         }
         fieldDTO.setFieldCode("FIELD-" + ++number);
         List<StaffEntity> staffEntities = new ArrayList<>();
-        List<LogEntity> logEntities = new ArrayList<>();
-        for (String id : fieldDTO.getMemberCodeList()){
-            if (staffDAO.existsById(id)){
-                staffEntities.add(staffDAO.getReferenceById(id));
+        List<CropEntity> cropEntities = new ArrayList<>();
+        if (fieldDTO.getMemberCodeList() != null || fieldDTO.getCropCodeList() != null) {
+            for (String id : fieldDTO.getMemberCodeList()) {
+                if (staffDAO.existsById(id)) {
+                    staffEntities.add(staffDAO.getReferenceById(id));
+                }
+            }
+            for (String id : fieldDTO.getCropCodeList()) {
+                if (cropDAO.existsById(id)) {
+                    cropEntities.add(cropDAO.getReferenceById(id));
+                }
             }
         }
-//        for (String logCode : fieldDTO.getLogList()){
-//            if (logDAO.existsById(logCode)){
-//                logEntities.add(logDAO.getReferenceById(logCode));
-//            }
-//        }
         FieldEntity fieldEntity = mapping.toFieldEntity(fieldDTO);
         fieldEntity.setLocation(fieldDTO.getLocation());
         fieldEntity.setStaffList(staffEntities);
-        fieldEntity.setLogList(logEntities);
+        fieldEntity.setCropList(cropEntities);
         FieldEntity saveField = fieldDAO.save(fieldEntity);
-        if (saveField == null){
+        if (saveField == null) {
             throw new DataPersistException("Field is not saved.");
         }
     }

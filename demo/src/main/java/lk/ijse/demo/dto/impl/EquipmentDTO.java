@@ -21,5 +21,5 @@ public class EquipmentDTO implements SuperDTO, EquipmentStatus {
     private String status;
     private int availableCount;
     private List<StaffEquipmentDetailsDTO> staffEquipmentDetailsList;
-    private List<FieldDTO> fieldList;
+    private List<String> fieldList;
 }

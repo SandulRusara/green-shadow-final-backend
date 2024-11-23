@@ -5,6 +5,7 @@ import lk.ijse.demo.dto.impl.FieldDTO;
 import lk.ijse.demo.exception.DataPersistException;
 import lk.ijse.demo.service.CropService;
 import lk.ijse.demo.util.IdGenerate;
+import lk.ijse.demo.util.IdListConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -28,16 +30,22 @@ public class CropController {
             @RequestPart("category") String category,
             @RequestPart("season") String season,
             @RequestPart("cropImage") MultipartFile cropImage,
-            @RequestPart("fieldList") List<String> fieldList
+            @RequestPart("fieldList") String fieldList
+           // @RequestPart("fieldList") List<String> fieldList
     ) {
         try{
+            List<String>fieldCodes=new ArrayList<>();
+            if (fieldList!=null){
+                fieldCodes= IdListConverter.spiltLists(fieldList);
+            }
             var cropDTO = new CropDTO();
             cropDTO.setCropName(cropName);
             cropDTO.setScientificName(scientificName);
             cropDTO.setCategory(category);
             cropDTO.setSeason(season);
             cropDTO.setCropImage(IdGenerate.imageBase64(cropImage.getBytes()));
-            cropDTO.setFieldCodeList(fieldList);
+            cropDTO.setFieldCodeList(fieldCodes);
+           // cropDTO.setFieldCodeList(fieldList);
             cropService.saveCrop(cropDTO);
             return new ResponseEntity<>(HttpStatus.CREATED);
         }catch (DataPersistException e){

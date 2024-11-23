@@ -38,19 +38,20 @@ public class CropServiceImpl implements CropService {
         cropDTO.setCropCode("CROP-" + ++number);
         CropEntity cropEntity = mapping.toCropEntity(cropDTO);
         List<FieldEntity> fieldEntities = new ArrayList<>();
-        List<LogEntity> logEntities = new ArrayList<>();
-        for (String fieldCode : cropDTO.getFieldCodeList()){
-            if (fieldDAO.existsById(fieldCode)){
-                fieldEntities.add(fieldDAO.getReferenceById(fieldCode));
+        for (String id:cropDTO.getFieldCodeList()){
+            if (fieldDAO.existsById(id)){
+                fieldEntities.add(fieldDAO.getReferenceById(id));
             }
         }
+
+
 //        for (String logCode:cropDTO.getLogCodeList()){
 //            if (logDAO.existsById(logCode)){
 //                logEntities.add(logDAO.getReferenceById(logCode));
 //            }
 //        }
         cropEntity.setFieldList(fieldEntities);
-        cropEntity.setLogList(logEntities);
+//        cropEntity.setLogList(logEntities);
         for (FieldEntity fieldEntity : fieldEntities){
             fieldEntity.getCropList().add(cropEntity);
         }
