@@ -50,8 +50,11 @@ public class FieldController {
             fieldDTO.setFieldImage2(IdGenerate.imageBase64(fieldImage2.getBytes()));
 //            fieldDTO.setCropCodeList(staffList);
 //            fieldDTO.setCropCodeList(cropList);
-            fieldDTO.setCropCodeList(staffCode);
-            fieldDTO.setCropCodeList(cropCode);
+//            fieldDTO.setCropCodeList(staffCode);
+//            fieldDTO.setCropCodeList(cropCode);
+            fieldDTO.setCropCodeList(staffCode); // Fixed assigning staff codes
+            fieldDTO.setMemberCodeList(cropCode); // Correctly assigns crop codes
+
             fieldService.saveField(fieldDTO);
             return new ResponseEntity<>(HttpStatus.CREATED);
         }catch (DataPersistException e){

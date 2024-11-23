@@ -33,6 +33,36 @@ public class FieldServiceImpl implements FieldService {
 
     @Override
     public void saveField(FieldDTO fieldDTO) {
+//        int number = 0;
+//        FieldEntity field = fieldDAO.findLastRowNative();
+//        if (field != null) {
+//            String[] parts = field.getFieldCode().split("-");
+//            number = Integer.parseInt(parts[1]);
+//        }
+//        fieldDTO.setFieldCode("FIELD-" + ++number);
+//        List<StaffEntity> staffEntities = new ArrayList<>();
+//        List<CropEntity> cropEntities = new ArrayList<>();
+//        if (fieldDTO.getMemberCodeList() != null || fieldDTO.getCropCodeList() != null) {
+//            for (String id : fieldDTO.getMemberCodeList()) {
+//                if (staffDAO.existsById(id)) {
+//                    staffEntities.add(staffDAO.getReferenceById(id));
+//                }
+//            }
+//            for (String id : fieldDTO.getCropCodeList()) {
+//                if (cropDAO.existsById(id)) {
+//                    cropEntities.add(cropDAO.getReferenceById(id));
+//                }
+//            }
+//        }
+//        FieldEntity fieldEntity = mapping.toFieldEntity(fieldDTO);
+//        fieldEntity.setLocation(fieldDTO.getLocation());
+//        fieldEntity.setStaffList(staffEntities);
+//        fieldEntity.setCropList(cropEntities);
+//        FieldEntity saveField = fieldDAO.save(fieldEntity);
+//        if (saveField == null) {
+//            throw new DataPersistException("Field is not saved.");
+//        }
+//    }
         int number = 0;
         FieldEntity field = fieldDAO.findLastRowNative();
         if (field != null) {
@@ -40,26 +70,37 @@ public class FieldServiceImpl implements FieldService {
             number = Integer.parseInt(parts[1]);
         }
         fieldDTO.setFieldCode("FIELD-" + ++number);
+
+        // Initialize staffEntities and cropEntities lists
         List<StaffEntity> staffEntities = new ArrayList<>();
         List<CropEntity> cropEntities = new ArrayList<>();
-        if (fieldDTO.getMemberCodeList() != null || fieldDTO.getCropCodeList() != null) {
+
+        // Check if MemberCodeList and CropCodeList are not null before iterating
+        if (fieldDTO.getMemberCodeList() != null) {
             for (String id : fieldDTO.getMemberCodeList()) {
                 if (staffDAO.existsById(id)) {
                     staffEntities.add(staffDAO.getReferenceById(id));
                 }
             }
+        }
+
+        if (fieldDTO.getCropCodeList() != null) {
             for (String id : fieldDTO.getCropCodeList()) {
                 if (cropDAO.existsById(id)) {
                     cropEntities.add(cropDAO.getReferenceById(id));
                 }
             }
         }
+
+        // Map FieldDTO to FieldEntity
         FieldEntity fieldEntity = mapping.toFieldEntity(fieldDTO);
         fieldEntity.setLocation(fieldDTO.getLocation());
         fieldEntity.setStaffList(staffEntities);
         fieldEntity.setCropList(cropEntities);
-        FieldEntity saveField = fieldDAO.save(fieldEntity);
-        if (saveField == null) {
+
+        // Save the entity and handle the result
+        FieldEntity savedField = fieldDAO.save(fieldEntity);
+        if (savedField == null) {
             throw new DataPersistException("Field is not saved.");
         }
     }
