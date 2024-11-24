@@ -22,8 +22,13 @@ public class EquipmentEntity {
     private String type;
     private String status;
     private int availableCount;
-    @OneToMany(mappedBy = "equipmentEntity")
-    private List<StaffEquipmentDetailsEntity> staffEquipmentDetailsList;
+    @ManyToMany
+    @JoinTable(
+            name = "equipment_staff_details",
+            joinColumns = @JoinColumn(name = "equipmentCode"),
+            inverseJoinColumns = @JoinColumn(name = "memberCode")
+    )
+    private List<StaffEntity> staffCodeList;
     @ManyToMany
     @JoinTable(
             name = "equipment_field_details",

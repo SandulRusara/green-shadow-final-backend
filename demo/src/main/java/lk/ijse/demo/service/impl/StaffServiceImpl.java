@@ -1,5 +1,6 @@
 package lk.ijse.demo.service.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lk.ijse.demo.dao.FieldDAO;
 import lk.ijse.demo.dao.StaffDAO;
@@ -20,6 +21,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 @Service
 @Transactional
 public class StaffServiceImpl implements StaffService {
@@ -66,6 +69,8 @@ public class StaffServiceImpl implements StaffService {
             throw new DataPersistException("Staff member not saved");
         }
     }
+
+
     protected LocalDate toConvertLocalDate(String date){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d");
         return LocalDate.parse(date,formatter);

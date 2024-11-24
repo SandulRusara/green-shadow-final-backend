@@ -42,7 +42,7 @@ public class StaffEntity {
     private List<FieldEntity> fieldList;
     @ManyToMany(mappedBy = "staffList")
     private List<LogEntity> logList;
-    @OneToMany(mappedBy = "staffEntity")
-    private List<StaffEquipmentDetailsEntity> staffEquipmentDetailsList;
+    @ManyToMany(mappedBy = "staffCodeList")
+    private List<EquipmentEntity> equipmentList;
 
 }

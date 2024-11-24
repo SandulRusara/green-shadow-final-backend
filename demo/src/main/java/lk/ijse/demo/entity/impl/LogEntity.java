@@ -33,6 +33,11 @@ public class LogEntity {
             inverseJoinColumns = @JoinColumn(name = "cropCode")
     )
     private List<CropEntity> cropList;
-    @ManyToMany(mappedBy = "logList")
+    @ManyToMany
+    @JoinTable(
+            name = "field_log_details",
+            joinColumns = @JoinColumn(name = "logCode"),
+            inverseJoinColumns = @JoinColumn(name = "fieldCode")
+    )
     private List<FieldEntity> fieldList;
 }

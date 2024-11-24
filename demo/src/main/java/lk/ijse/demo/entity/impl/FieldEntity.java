@@ -26,7 +26,6 @@ public class FieldEntity implements SuperEntity {
     private String fieldImage1;
     @Column(columnDefinition = "LONGTEXT")
     private String fieldImage2;
-    @JsonIgnore  // Ignore during serialization to avoid recursion
     @ManyToMany(mappedBy = "fieldList")
     private List<EquipmentEntity> equipmentsList;
     @ManyToMany
@@ -36,14 +35,9 @@ public class FieldEntity implements SuperEntity {
             inverseJoinColumns = @JoinColumn(name = "memberCode")
     )
     private List<StaffEntity> staffList;
-    @ManyToMany
-    @JoinTable(
-            name = "field_log_details",
-            joinColumns = @JoinColumn(name = "fieldCode"),
-            inverseJoinColumns = @JoinColumn(name = "logCode")
-    )
+    @ManyToMany(mappedBy = "fieldList")
     private List<LogEntity> logList;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(
             name = "field_crop_details",
             joinColumns = @JoinColumn(name = "fieldCode"),
