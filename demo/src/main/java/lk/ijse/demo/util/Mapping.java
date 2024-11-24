@@ -114,7 +114,7 @@ public class Mapping {
         return modelMapper.map(vehicleEntity,new TypeToken<List<VehicleDTO>>(){}.getType());
     }
 
-    public StaffEquipmentDetailsEntity toStaffEquDetailsEntity(StaffEquipmentDetailsDTO staffEquDTO){
-        return modelMapper.map(staffEquDTO,StaffEquipmentDetailsEntity.class);
-    }
+//    public StaffEquipmentDetailsEntity toStaffEquDetailsEntity(StaffEquipmentDetailsDTO staffEquDTO){
+//        return modelMapper.map(staffEquDTO,StaffEquipmentDetailsEntity.class);
+//    }
 }

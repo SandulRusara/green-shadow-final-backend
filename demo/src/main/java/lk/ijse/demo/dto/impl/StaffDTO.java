@@ -33,7 +33,7 @@ public class StaffDTO implements SuperDTO, StaffStatus {
     private String contactNo;
     private String email;
     private Role role;
-    private List<StaffEquipmentDetailsDTO> staffEquipmentDetailsList;
+    private List<String> equipmentList;
     private List<String> vehicleList;
     private List<String> fieldCodeList;
     private List<String> logList;

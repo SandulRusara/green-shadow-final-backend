@@ -70,6 +70,51 @@ public class StaffServiceImpl implements StaffService {
         }
     }
 
+//    public void saveStaffMember(StaffDTO staffDTO) {
+//        int number = 0;
+//        StaffEntity staff = staffDAO.findLastRowNative();
+//        if (staff != null) {
+//            String[] parts = staff.getMemberCode().split("-");
+//            number = Integer.parseInt(parts[1]);
+//        }
+//        staffDTO.setMemberCode("MEMBER-" + ++number);
+//
+//        List<FieldEntity> fieldEntities = new ArrayList<>();
+//        List<VehicleEntity> vehicleEntities = new ArrayList<>();
+//
+//        // Validate and fetch FieldEntity
+//        for (String fieldCode : staffDTO.getFieldCodeList()) {
+//            FieldEntity fieldEntity = fieldDAO.findById(fieldCode)
+//                    .orElseThrow(() -> new EntityNotFoundException("FieldEntity with id " + fieldCode + " not found"));
+//            fieldEntities.add(fieldEntity);
+//        }
+//
+//        // Validate and fetch VehicleEntity
+//        for (String vehicleCode : staffDTO.getVehicleList()) {
+//            VehicleEntity vehicleEntity = vehicleDAO.findById(vehicleCode)
+//                    .orElseThrow(() -> new EntityNotFoundException("VehicleEntity with id " + vehicleCode + " not found"));
+//            vehicleEntities.add(vehicleEntity);
+//        }
+//
+//        StaffEntity staffEntity = mapping.toStaffEntity(staffDTO);
+//        staffEntity.setFieldList(fieldEntities);
+//        staffEntity.setVehicleList(vehicleEntities);
+//        staffEntity.setJoinedDate(toConvertLocalDate(staffDTO.getJoinedDate()));
+//        staffEntity.setDateOfBirth(toConvertLocalDate(staffDTO.getDateOfBirth()));
+//
+//        // Update FieldEntity staff lists
+//        for (FieldEntity field : fieldEntities) {
+//            field.getStaffList().add(staffEntity);
+//        }
+//
+//        StaffEntity savedStaff = staffDAO.save(staffEntity);
+//        if (savedStaff == null) {
+//            throw new DataPersistException("Staff member not saved");
+//        }
+//    }
+
+
+
 
     protected LocalDate toConvertLocalDate(String date){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d");
