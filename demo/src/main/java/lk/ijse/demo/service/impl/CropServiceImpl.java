@@ -33,6 +33,41 @@ public class CropServiceImpl implements CropService {
     private LogDAO logDAO;
     @Override
     public void saveCrop(CropDTO cropDTO) {
+//        int number = 0;
+//        CropEntity crop = cropDAO.findLastRowNative();
+//        if (crop != null){
+//            String[] parts = crop.getCropCode().split("-");
+//            number = Integer.parseInt(parts[1]);
+//        }
+//        cropDTO.setCropCode("CROP-" + ++number);
+//        CropEntity cropEntity = mapping.toCropEntity(cropDTO);
+//        List<FieldEntity> fieldEntities = new ArrayList<>();
+//        List<LogEntity> logEntities = new ArrayList<>();
+//        for (String id:cropDTO.getFieldCodeList()){
+//            if (fieldDAO.existsById(id)){
+//                fieldEntities.add(fieldDAO.getReferenceById(id));
+//            }
+//        }
+//
+//
+//        for (String logCode:cropDTO.getLogCodeList()){
+//            if (logDAO.existsById(logCode)){
+//                logEntities.add(logDAO.getReferenceById(logCode));
+//            }
+//        }
+//        cropEntity.setFieldList(fieldEntities);
+//        cropEntity.setLogList(logEntities);
+//        for (FieldEntity fieldEntity : fieldEntities){
+//            fieldEntity.getCropList().add(cropEntity);
+//        }
+//        for (LogEntity logEntity:logEntities){
+//            logEntity.getCropList().add(cropEntity);
+//        }
+//        cropDAO.save(cropEntity);
+//        if (cropEntity == null){
+//            throw new DataPersistException("Crop is not saved.");
+//        }
+
         int number = 0;
         CropEntity crop = cropDAO.findLastRowNative();
         if (crop != null){
@@ -43,16 +78,16 @@ public class CropServiceImpl implements CropService {
         CropEntity cropEntity = mapping.toCropEntity(cropDTO);
         List<FieldEntity> fieldEntities = new ArrayList<>();
         List<LogEntity> logEntities = new ArrayList<>();
-        for (String id:cropDTO.getFieldCodeList()){
-            if (fieldDAO.existsById(id)){
-                fieldEntities.add(fieldDAO.getReferenceById(id));
+        for (String fieldCode : cropDTO.getFieldCodeList()){
+            if (fieldDAO.existsById(fieldCode)){
+                fieldEntities.add(fieldDAO.getReferenceById(fieldCode));
             }
         }
-
-
-        for (String logCode:cropDTO.getLogCodeList()){
-            if (logDAO.existsById(logCode)){
-                logEntities.add(logDAO.getReferenceById(logCode));
+        if (cropDTO.getLogCodeList()!=null) {
+            for (String logCode : cropDTO.getLogCodeList()) {
+                if (logDAO.existsById(logCode)) {
+                    logEntities.add(logDAO.getReferenceById(logCode));
+                }
             }
         }
         cropEntity.setFieldList(fieldEntities);
@@ -71,12 +106,22 @@ public class CropServiceImpl implements CropService {
 
     @Override
     public List<CropDTO> getAllCrop() {
-//        List<CropDTO> cropDTOS = new ArrayList<>();
-//        for (CropEntity cropEntity:cropDAO.findAll()) {
-//
-//        }
-            return null;
-
+        List<CropDTO> cropDTOS = new ArrayList<>();
+        for (CropEntity cropEntity:cropDAO.findAll()) {
+            List<String> fieldCode = new ArrayList<>();
+            List<String> logCodes = new ArrayList<>();
+            for (FieldEntity field : cropEntity.getFieldList()){
+                fieldCode.add(field.getFieldCode());
+            }
+            for (LogEntity logs : cropEntity.getLogList()){
+                logCodes.add(logs.getLogCode());
+            }
+            CropDTO cropDTO = mapping.toCropDTO(cropEntity);
+            cropDTO.setFieldCodeList(fieldCode);
+            cropDTO.setLogCodeList(logCodes);
+            cropDTOS.add(cropDTO);
+        }
+        return cropDTOS;
     }
 
     @Override
