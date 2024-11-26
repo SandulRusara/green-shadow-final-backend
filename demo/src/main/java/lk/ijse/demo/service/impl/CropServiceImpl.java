@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -141,7 +142,15 @@ public class CropServiceImpl implements CropService {
 
     @Override
     public void updateCrop(String id, CropDTO cropDTO) {
+        Optional<CropEntity> byId = cropDAO.findById(id);
+        if (byId.isPresent()){
+            byId.get().setCropName(cropDTO.getCropName());
+            byId.get().setScientificName(cropDTO.getScientificName());
+            byId.get().setCategory(cropDTO.getCategory());
+            byId.get().setSeason(cropDTO.getSeason());
+            byId.get().setCropImage(cropDTO.getCropImage());
 
+        }
     }
 
     @Override
