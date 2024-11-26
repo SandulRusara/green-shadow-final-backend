@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +21,7 @@ import java.util.List;
 @RequestMapping("api/v1/crops")
 @CrossOrigin
 public class CropController {
-     @Autowired
+    @Autowired
     private CropService cropService;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -31,12 +32,12 @@ public class CropController {
             @RequestPart("season") String season,
             @RequestPart("cropImage") MultipartFile cropImage,
             @RequestPart("fieldList") String fieldList
-           // @RequestPart("fieldList") List<String> fieldList
+            // @RequestPart("fieldList") List<String> fieldList
     ) {
-        try{
-            List<String>fieldCodes=new ArrayList<>();
-            if (fieldList!=null){
-                fieldCodes= IdListConverter.spiltLists(fieldList);
+        try {
+            List<String> fieldCodes = new ArrayList<>();
+            if (fieldList != null) {
+                fieldCodes = IdListConverter.spiltLists(fieldList);
             }
             var cropDTO = new CropDTO();
             cropDTO.setCropName(cropName);
@@ -45,21 +46,56 @@ public class CropController {
             cropDTO.setSeason(season);
             cropDTO.setCropImage(IdGenerate.imageBase64(cropImage.getBytes()));
             cropDTO.setFieldCodeList(fieldCodes);
-           // cropDTO.setFieldCodeList(fieldList);
+            // cropDTO.setFieldCodeList(fieldList);
             cropService.saveCrop(cropDTO);
             return new ResponseEntity<>(HttpStatus.CREATED);
-        }catch (DataPersistException e){
+        } catch (DataPersistException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<CropDTO> getAllCrops(){
+    public List<CropDTO> getAllCrops() {
         return cropService.getAllCrop();
     }
+
+    @DeleteMapping(value = "/{cropCode}")
+    public ResponseEntity<Void> deleteCrop(@PathVariable("cropCode") String cropCode) {
+        try {
+            cropService.deleteCrop(cropCode);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (DataPersistException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return null;
+    }
+
+    @PutMapping(value = "/{cropId}")
+    public void updateCrop(
+            @PathVariable("cropId") String cropId,
+            @RequestPart("cropName") String cropName,
+            @RequestPart("scientificName") String scientificName,
+            @RequestPart("category") String category,
+            @RequestPart("season") String season,
+            @RequestPart("cropImage") MultipartFile cropImage
+    ) throws IOException {
+        CropDTO cropDTO = new CropDTO();
+        cropDTO.setCropCode(cropId);
+        cropDTO.setCropName(cropName);
+        cropDTO.setScientificName(scientificName);
+        cropDTO.setCategory(category);
+        cropDTO.setSeason(season);
+        cropDTO.setCropImage(IdGenerate.imageBase64(cropImage.getBytes()));
+        cropService.updateCrop(cropId,cropDTO);
+    }
+
 
 
 }

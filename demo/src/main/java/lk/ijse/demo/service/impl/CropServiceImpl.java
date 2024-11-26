@@ -126,6 +126,16 @@ public class CropServiceImpl implements CropService {
 
     @Override
     public void deleteCrop(String id) {
+        if (cropDAO.existsById(id)) {
+            CropEntity cropEntity =cropDAO.getReferenceById(id);
+                List<FieldEntity>fieldEntities=cropEntity.getFieldList();
+                for(FieldEntity field :fieldEntities){
+                    List<CropEntity>cropEntities=field.getCropList();
+                    cropEntities.remove(cropEntity);
+                }
+                cropEntity.getFieldList().clear();
+                cropDAO.delete(cropEntity);
+        }
 
     }
 
