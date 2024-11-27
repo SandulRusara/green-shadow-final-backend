@@ -2,10 +2,12 @@ package lk.ijse.demo.controller;
 
 import lk.ijse.demo.dto.impl.CropDTO;
 import lk.ijse.demo.dto.impl.FieldDTO;
+import lk.ijse.demo.exception.CropNotFoundException;
 import lk.ijse.demo.exception.DataPersistException;
 import lk.ijse.demo.service.CropService;
 import lk.ijse.demo.util.IdGenerate;
 import lk.ijse.demo.util.IdListConverter;
+import lk.ijse.demo.util.Regex;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -63,18 +65,20 @@ public class CropController {
         return cropService.getAllCrop();
     }
 
-    @DeleteMapping(value = "/{cropCode}")
-    public ResponseEntity<Void> deleteCrop(@PathVariable("cropCode") String cropCode) {
+    @DeleteMapping(value = "/{cropId}")
+    public ResponseEntity<Void> deleteCrop(@PathVariable("cropId") String cropId) {
         try {
-            cropService.deleteCrop(cropCode);
+            if (!Regex.idValidator(cropId).matches()){
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            cropService.deleteCrop(cropId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (DataPersistException e) {
+        }catch (CropNotFoundException e){
             e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return null;
     }
 
     @PutMapping(value = "/{cropId}")

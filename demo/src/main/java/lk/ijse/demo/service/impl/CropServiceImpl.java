@@ -10,6 +10,7 @@ import lk.ijse.demo.dto.impl.CropDTO;
 import lk.ijse.demo.entity.impl.CropEntity;
 import lk.ijse.demo.entity.impl.FieldEntity;
 import lk.ijse.demo.entity.impl.LogEntity;
+import lk.ijse.demo.exception.CropNotFoundException;
 import lk.ijse.demo.exception.DataPersistException;
 import lk.ijse.demo.service.CropService;
 import lk.ijse.demo.util.Mapping;
@@ -127,15 +128,37 @@ public class CropServiceImpl implements CropService {
 
     @Override
     public void deleteCrop(String id) {
-        if (cropDAO.existsById(id)) {
-            CropEntity cropEntity =cropDAO.getReferenceById(id);
-                List<FieldEntity>fieldEntities=cropEntity.getFieldList();
-                for(FieldEntity field :fieldEntities){
-                    List<CropEntity>cropEntities=field.getCropList();
-                    cropEntities.remove(cropEntity);
-                }
-                cropEntity.getFieldList().clear();
-                cropDAO.delete(cropEntity);
+//        if (cropDAO.existsById(id)) {
+//            CropEntity cropEntity =cropDAO.getReferenceById(id);
+//                List<FieldEntity>fieldEntities=cropEntity.getFieldList();
+//                for(FieldEntity field :fieldEntities){
+//                    List<CropEntity>cropEntities=field.getCropList();
+//                    cropEntities.remove(cropEntity);
+//                }
+//                cropEntity.getFieldList().clear();
+//                cropDAO.delete(cropEntity);
+//        }
+
+        Optional<CropEntity> selectedCrop = cropDAO.findById(id);
+        if (cropDAO.existsById(id)){
+            CropEntity cropEntity = cropDAO.getReferenceById(id);
+            List<LogEntity> logEntities = cropEntity.getLogList();
+            List<FieldEntity> fieldEntities = cropEntity.getFieldList();
+            for (LogEntity logEntity:logEntities){
+                List<CropEntity> crop = logEntity.getCropList();
+                crop.remove(cropEntity);
+            }
+            for (FieldEntity fieldEntity:fieldEntities){
+                List<CropEntity> crop = fieldEntity.getCropList();
+                crop.remove(cropEntity);
+            }
+            cropEntity.getLogList().clear();
+            cropEntity.getFieldList().clear();
+        }
+        if (!selectedCrop.isPresent()){
+            throw new CropNotFoundException("Crop with id " + id + "not found");
+        }else {
+            cropDAO.deleteById(id);
         }
 
     }
