@@ -6,10 +6,7 @@ import lk.ijse.demo.dao.FieldDAO;
 import lk.ijse.demo.dao.StaffDAO;
 import lk.ijse.demo.dto.FieldStatus;
 import lk.ijse.demo.dto.impl.FieldDTO;
-import lk.ijse.demo.entity.impl.CropEntity;
-import lk.ijse.demo.entity.impl.FieldEntity;
-import lk.ijse.demo.entity.impl.LogEntity;
-import lk.ijse.demo.entity.impl.StaffEntity;
+import lk.ijse.demo.entity.impl.*;
 import lk.ijse.demo.exception.DataPersistException;
 import lk.ijse.demo.exception.FieldNotFoundException;
 import lk.ijse.demo.service.FieldService;
@@ -21,6 +18,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -109,20 +107,53 @@ public class FieldServiceImpl implements FieldService {
         }
     }
 
+
+    @Override
+    public void updateField(String id, FieldDTO fieldDTO) {
+        Optional<FieldEntity> byId = fieldDAO.findById(id);
+        if (byId.isPresent()){
+            byId.get().setName(fieldDTO.getName());
+            byId.get().setLocation(fieldDTO.getLocation());
+            byId.get().setExtentSize(fieldDTO.getExtentSize());
+            byId.get().setFieldImage1(fieldDTO.getFieldImage1());
+            byId.get().setFieldImage2(fieldDTO.getFieldImage2());
+            List<CropEntity> cropEntities = new ArrayList<>();
+            List<StaffEntity> staffEntities = new ArrayList<>();
+            for (String cropCode:fieldDTO.getCropCodeList()){
+                cropEntities.add(cropDAO.getReferenceById(cropCode));
+            }
+            for (String memberCode:fieldDTO.getMemberCodeList()){
+                staffEntities.add(staffDAO.getReferenceById(memberCode));
+            }
+            byId.get().setCropList(cropEntities);
+            byId.get().setStaffList(staffEntities);
+        }
+    }
+
+    @Override
+    public void deleteField(String id) throws FileNotFoundException, FieldNotFoundException {
+        Optional<FieldEntity> selectedField = fieldDAO.findById(id);
+        if (fieldDAO.existsById(id)){
+            FieldEntity fieldEntity = fieldDAO.getReferenceById(id);
+            List<EquipmentEntity> equipmentEntities = fieldEntity.getEquipmentsList();
+            for (EquipmentEntity equipmentEntity:equipmentEntities){
+                List<FieldEntity> fields = equipmentEntity.getFieldList();
+                fields.remove(fieldEntity);
+            }
+            fieldEntity.getEquipmentsList().clear();
+        }
+        if (!selectedField.isPresent()){
+            throw new FieldNotFoundException(" id " + id + "not found");
+        }else {
+            fieldDAO.deleteById(id);
+        }
+    }
+
     @Override
     public List<FieldDTO> getAllField() throws IOException, ClassNotFoundException {
         return null;
     }
 
-    @Override
-    public void deleteField(String id) throws FileNotFoundException, FieldNotFoundException {
-
-    }
-
-    @Override
-    public void updateField(String id, FieldDTO fieldDTO) {
-
-    }
 
     @Override
     public FieldStatus getSelectedField(String fieldId) {
