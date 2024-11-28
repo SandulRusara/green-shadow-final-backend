@@ -1,6 +1,7 @@
 package lk.ijse.demo.controller;
 
 
+import jakarta.annotation.security.RolesAllowed;
 import lk.ijse.demo.customerStatusCode.SelectedErrorStatus;
 import lk.ijse.demo.dto.EquipmentStatus;
 import lk.ijse.demo.dto.impl.EquipmentDTO;
@@ -24,6 +25,7 @@ public class EquipmentController {
     private EquipmentService equipmentService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RolesAllowed({"MANAGER"})
     public ResponseEntity<Void> saveEquipment(@RequestBody EquipmentDTO equipmentDTO){
         try{
             equipmentService.saveEquipment(equipmentDTO);
@@ -37,6 +39,7 @@ public class EquipmentController {
         }
     }
     @PutMapping(value = "/{equipmentId}",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RolesAllowed({"MANAGER"})
     public ResponseEntity<Void> updateEquipment(@PathVariable ("equipmentId") String equipmentId ,@RequestBody EquipmentDTO equipmentDTO){
         try{
             equipmentService.updateEquipment(equipmentId,equipmentDTO);
