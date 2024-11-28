@@ -6,13 +6,15 @@ import lk.ijse.demo.dto.SuperDTO;
 import lk.ijse.demo.dto.UserStatus;
 import lk.ijse.demo.entity.Role;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UserDTO implements SuperDTO, UserStatus {
+@Builder
+public class UserDTO implements SuperDTO {
     @Id
     private String user_id;
     private String email;
