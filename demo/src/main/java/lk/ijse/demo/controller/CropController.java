@@ -74,6 +74,7 @@ public class CropController {
     }
 
     @DeleteMapping(value = "/{cropId}")
+    @RolesAllowed({"MANAGER"})
     public ResponseEntity<Void> deleteCrop(@PathVariable("cropId") String cropId) {
         try {
             if (!Regex.idValidator(cropId).matches()){
