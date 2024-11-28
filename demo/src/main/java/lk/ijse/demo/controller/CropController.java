@@ -122,6 +122,7 @@ public class CropController {
 
 
     @PutMapping(value = "/{cropId}")
+    @RolesAllowed({"MANAGER"})
     public void updateCrop(
             @PathVariable("cropId") String cropId,
             @RequestPart("cropName") String cropName,
