@@ -6,9 +6,9 @@ import lk.ijse.demo.secure.SignUp;
 import lk.ijse.demo.secure.SingIn;
 
 public interface AuthenticationService {
-    JwtAuthResponse singUp (SignUp signUp);
-    JwtAuthResponse singIp (SingIn signUp);
+    JwtAuthResponse signUp (SignUp signUp);
+    JwtAuthResponse signIn (SingIn signUp);
     JwtAuthResponse refreshToken(String refreshToken);
-    void changePassword(ChangePasswordDTO changePasswordDTO);
+//    void changePassword(ChangePasswordDTO changePasswordDTO);
 
 }

@@ -1,5 +1,6 @@
 package lk.ijse.demo.controller;
 
+import jakarta.annotation.security.RolesAllowed;
 import lk.ijse.demo.dto.impl.CropDTO;
 import lk.ijse.demo.dto.impl.FieldDTO;
 import lk.ijse.demo.exception.CropNotFoundException;
@@ -32,6 +33,7 @@ public class CropController {
 //    private static final Logger log = LoggerFactory.getLogger(CropController.class);
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RolesAllowed({"MANAGER"})
     public ResponseEntity<Void> saveCrop(
             @RequestPart("cropName") String cropName,
             @RequestPart("scientificName") String scientificName,
@@ -66,6 +68,7 @@ public class CropController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @RolesAllowed({"MANAGER"})
     public List<CropDTO> getAllCrops() {
         return cropService.getAllCrop();
     }

@@ -23,6 +23,7 @@ import java.util.Set;
 @Table(name = "user")
 public class UserEntity implements SuperEntity, UserDetails {
     @Id
+    private String user_id;
     private String email;
     private String password;
     @Enumerated(EnumType.STRING)

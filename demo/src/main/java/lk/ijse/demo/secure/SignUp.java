@@ -1,8 +1,6 @@
 package lk.ijse.demo.secure;
 
-import jakarta.persistence.Access;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,9 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class SignUp {
-    @NotNull(message = "Id genarate by backend")
+    @NotNull
     private String user_id;
-
     @NotNull(message = "Email Can`t be Null ")
     @Email
     private String email;
