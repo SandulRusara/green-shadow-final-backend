@@ -4,17 +4,21 @@ import jakarta.transaction.Transactional;
 import lk.ijse.demo.dao.CropDAO;
 import lk.ijse.demo.dao.FieldDAO;
 import lk.ijse.demo.dao.StaffDAO;
+import lk.ijse.demo.dto.FieldStatus;
 import lk.ijse.demo.dto.impl.FieldDTO;
 import lk.ijse.demo.entity.impl.CropEntity;
 import lk.ijse.demo.entity.impl.FieldEntity;
 import lk.ijse.demo.entity.impl.LogEntity;
 import lk.ijse.demo.entity.impl.StaffEntity;
 import lk.ijse.demo.exception.DataPersistException;
+import lk.ijse.demo.exception.FieldNotFoundException;
 import lk.ijse.demo.service.FieldService;
 import lk.ijse.demo.util.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,4 +108,25 @@ public class FieldServiceImpl implements FieldService {
             throw new DataPersistException("Field is not saved.");
         }
     }
+
+    @Override
+    public List<FieldDTO> getAllField() throws IOException, ClassNotFoundException {
+        return null;
+    }
+
+    @Override
+    public void deleteField(String id) throws FileNotFoundException, FieldNotFoundException {
+
+    }
+
+    @Override
+    public void updateField(String id, FieldDTO fieldDTO) {
+
+    }
+
+    @Override
+    public FieldStatus getSelectedField(String fieldId) {
+        return null;
+    }
+
 }
