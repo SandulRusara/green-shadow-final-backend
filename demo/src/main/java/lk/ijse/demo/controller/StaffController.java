@@ -1,5 +1,6 @@
 package lk.ijse.demo.controller;
 
+import jakarta.annotation.security.RolesAllowed;
 import lk.ijse.demo.dto.impl.StaffDTO;
 import lk.ijse.demo.exception.DataPersistException;
 import lk.ijse.demo.service.StaffService;
@@ -17,6 +18,7 @@ public class StaffController {
     @Autowired
     private StaffService staffService;
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RolesAllowed({"MANAGER"})
     public ResponseEntity<Void> saveStaff(@RequestBody StaffDTO staffDTO){
         try{
             if (!Regex.emailValidator(staffDTO.getEmail()).matches()){
