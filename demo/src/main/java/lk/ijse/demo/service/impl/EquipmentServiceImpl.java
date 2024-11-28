@@ -1,6 +1,7 @@
 package lk.ijse.demo.service.impl;
 
 
+import lk.ijse.demo.customerStatusCode.SelectedErrorStatus;
 import lk.ijse.demo.dao.EquipmentDAO;
 import lk.ijse.demo.dao.FieldDAO;
 import lk.ijse.demo.dao.StaffDAO;
@@ -127,7 +128,12 @@ public class EquipmentServiceImpl implements EquipmentService {
 
     @Override
     public EquipmentStatus getSelectedEquipment(String equipmentId) {
-        return null;
+        if(equipmentDAO.existsById(equipmentId)){
+            var selectedEquipment = equipmentDAO.getReferenceById(equipmentId);
+            return mapping.toEquipmentDTO(selectedEquipment);
+        }else {
+            return new SelectedErrorStatus(2," Equipment not found");
+        }
     }
 
 
