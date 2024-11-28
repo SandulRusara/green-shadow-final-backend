@@ -78,10 +78,6 @@ public class VehicleController {
         return vehicleService.getSelectedVehicle(vehicleId);
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<VehicleDTO> getAllVehicle(){
-        return vehicleService.getAllVehicle();
-    }
 
 
 
