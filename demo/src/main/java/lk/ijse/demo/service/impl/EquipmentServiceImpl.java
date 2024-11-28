@@ -62,7 +62,7 @@ public class EquipmentServiceImpl implements EquipmentService {
         equipmentEntity.setStaffCodeList(staffEntities);
         EquipmentEntity equEntity = equipmentDAO.save(equipmentEntity);
         if (equEntity == null){
-            throw new DataPersistException("Equipment not saved!");
+            throw new DataPersistException("Equipment Not Saved!");
         }
     }
 
@@ -90,7 +90,7 @@ public class EquipmentServiceImpl implements EquipmentService {
     public void deleteEquipment(String id) {
         Optional<EquipmentEntity> selectedEquipment = equipmentDAO.findById(id);
         if (!selectedEquipment.isPresent()){
-            throw new EquipmentNotFoundException("Equipment Id " + id + "Not Found");
+            throw new EquipmentNotFoundException("Id " + id + "Not Found");
         }else {
             equipmentDAO.deleteById(id);
         }
@@ -132,7 +132,7 @@ public class EquipmentServiceImpl implements EquipmentService {
             var selectedEquipment = equipmentDAO.getReferenceById(equipmentId);
             return mapping.toEquipmentDTO(selectedEquipment);
         }else {
-            return new SelectedErrorStatus(2," Equipment not found");
+            return new SelectedErrorStatus(2," Equipment Not Found");
         }
     }
 

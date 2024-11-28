@@ -46,7 +46,7 @@ public class VehicleServiceImpl implements VehicleService {
         }
         VehicleEntity save = vehicleDAO.save(vehicleEntity);
         if (save == null){
-            throw new DataPersistException("vehicle not saved");
+            throw new DataPersistException("Vehicle Not Saved");
         }
     }
 
@@ -69,7 +69,7 @@ public class VehicleServiceImpl implements VehicleService {
     public void deleteVehicle(String id) throws VehicleNotFoundException {
         Optional<VehicleEntity> selectedVehicle = vehicleDAO.findById(id);
         if (!selectedVehicle.isPresent()){
-            throw new VehicleNotFoundException("vehicle Id with" + id + "Not found");
+            throw new VehicleNotFoundException("Vehicle Id With" + id + "Not Found");
         }else {
             vehicleDAO.deleteById(id);
         }
@@ -98,7 +98,7 @@ public class VehicleServiceImpl implements VehicleService {
             var selectedVehicle = vehicleDAO.getReferenceById(id);
             return mapping.toVehicleDTO(selectedVehicle);
         }else {
-            return new SelectedErrorStatus(2,"Selected vehicle not found");
+            return new SelectedErrorStatus(2,"Selected Vehicle Not Found");
         }
     }
 }

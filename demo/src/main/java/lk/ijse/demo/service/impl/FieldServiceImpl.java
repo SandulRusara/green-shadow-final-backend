@@ -104,7 +104,7 @@ public class FieldServiceImpl implements FieldService {
         // Save the entity and handle the result
         FieldEntity savedField = fieldDAO.save(fieldEntity);
         if (savedField == null) {
-            throw new DataPersistException("Field is not saved.");
+            throw new DataPersistException("Field Is Not Saved.");
         }
     }
 
@@ -144,7 +144,7 @@ public class FieldServiceImpl implements FieldService {
             fieldEntity.getEquipmentsList().clear();
         }
         if (!selectedField.isPresent()){
-            throw new FieldNotFoundException(" id " + id + "not found");
+            throw new FieldNotFoundException(" Id " + id + "Not Found");
         }else {
             fieldDAO.deleteById(id);
         }
@@ -176,7 +176,7 @@ public class FieldServiceImpl implements FieldService {
         if (fieldDAO.existsById(fieldId)){
             return mapping.toFieldDTO(fieldDAO.getReferenceById(fieldId));
         }else {
-            return new SelectedErrorStatus(2,"Field with Code "+fieldId+" not found");
+            return new SelectedErrorStatus(2,"Field With Code "+fieldId+" Not Found");
         }
     }
 

@@ -73,7 +73,7 @@ public class LogServiceImpl implements LogService {
         }
         LogEntity saveLog = logDAO.save(logEntity);
         if (saveLog==null){
-            throw new DataPersistException("Field is not saved.");
+            throw new DataPersistException("Field Is Not Saved.");
         }
     }
 
@@ -126,7 +126,7 @@ public class LogServiceImpl implements LogService {
             logEntity.getCropList().clear();
             logDAO.delete(logEntity);
         }else {
-            throw new CropNotFoundException("Log with id " + id + "not found");
+            throw new CropNotFoundException("Id " + id + "Not Found");
         }
     }
 

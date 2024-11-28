@@ -102,7 +102,7 @@ public class CropServiceImpl implements CropService {
         }
         cropDAO.save(cropEntity);
         if (cropEntity == null){
-            throw new DataPersistException("Crop is not saved.");
+            throw new DataPersistException("Crop Is Not Saved.");
         }
     }
 
@@ -156,7 +156,7 @@ public class CropServiceImpl implements CropService {
             cropEntity.getFieldList().clear();
         }
         if (!selectedCrop.isPresent()){
-            throw new CropNotFoundException("Crop with id " + id + "not found");
+            throw new CropNotFoundException("Id " + id + "Not Nound");
         }else {
             cropDAO.deleteById(id);
         }
