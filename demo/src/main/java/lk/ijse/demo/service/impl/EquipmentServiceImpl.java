@@ -10,6 +10,7 @@ import lk.ijse.demo.entity.impl.EquipmentEntity;
 import lk.ijse.demo.entity.impl.FieldEntity;
 import lk.ijse.demo.entity.impl.StaffEntity;
 import lk.ijse.demo.exception.DataPersistException;
+import lk.ijse.demo.exception.EquipmentNotFoundException;
 import lk.ijse.demo.service.EquipmentService;
 import lk.ijse.demo.util.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,12 +87,42 @@ public class EquipmentServiceImpl implements EquipmentService {
 
     @Override
     public void deleteEquipment(String id) {
-
+        Optional<EquipmentEntity> selectedEquipment = equipmentDAO.findById(id);
+        if (!selectedEquipment.isPresent()){
+            throw new EquipmentNotFoundException("Equipment Id " + id + "Not Found");
+        }else {
+            equipmentDAO.deleteById(id);
+        }
     }
 
     @Override
     public void updateEquipment(String id, EquipmentDTO equipmentDTO) {
-
+        Optional<EquipmentEntity> tmpEquipment = equipmentDAO.findById(id);
+        if (tmpEquipment.isPresent()){
+            tmpEquipment.get().setName(equipmentDTO.getName());
+            tmpEquipment.get().setType(equipmentDTO.getType());
+            tmpEquipment.get().setStatus(equipmentDTO.getStatus());
+            tmpEquipment.get().setAvailableCount(equipmentDTO.getAvailableCount());
+            List<FieldEntity> fieldEntities = new ArrayList<>();
+            List<StaffEntity> staffEntities = new ArrayList<>();
+            for (String fieldCode : equipmentDTO.getFieldList()){
+                fieldEntities.add(fieldDAO.getReferenceById(fieldCode));
+            }
+            for (String staffCode : equipmentDTO.getStaffCodeList()){
+                staffEntities.add(staffDAO.getReferenceById(staffCode));
+            }
+            EquipmentEntity equipmentEntity = mapping.toEquipmentEntity(equipmentDTO);
+            equipmentEntity.setFieldList(fieldEntities);
+            equipmentEntity.setStaffCodeList(staffEntities);
+            for (FieldEntity field:fieldEntities){
+                field.getEquipmentsList().add(equipmentEntity);
+            }
+            for (StaffEntity staffs:staffEntities){
+                staffs.getEquipmentList().add(equipmentEntity);
+            }
+            tmpEquipment.get().setFieldList(equipmentEntity.getFieldList());
+            tmpEquipment.get().setStaffCodeList(equipmentEntity.getStaffCodeList());
+        }
     }
 
     @Override
