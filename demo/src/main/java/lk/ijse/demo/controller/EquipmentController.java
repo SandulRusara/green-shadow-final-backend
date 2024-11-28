@@ -25,7 +25,7 @@ public class EquipmentController {
     private EquipmentService equipmentService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    @RolesAllowed({"MANAGER"})
+    @RolesAllowed({"MANAGER","ADMINISTRATIVE"})
     public ResponseEntity<Void> saveEquipment(@RequestBody EquipmentDTO equipmentDTO){
         try{
             equipmentService.saveEquipment(equipmentDTO);
@@ -39,7 +39,7 @@ public class EquipmentController {
         }
     }
     @PutMapping(value = "/{equipmentId}",consumes = MediaType.APPLICATION_JSON_VALUE)
-    @RolesAllowed({"MANAGER"})
+    @RolesAllowed({"MANAGER","ADMINISTRATIVE"})
     public ResponseEntity<Void> updateEquipment(@PathVariable ("equipmentId") String equipmentId ,@RequestBody EquipmentDTO equipmentDTO){
         try{
             equipmentService.updateEquipment(equipmentId,equipmentDTO);
@@ -52,7 +52,7 @@ public class EquipmentController {
         }
     }
     @DeleteMapping(value = "/{equipmentId}")
-    @RolesAllowed({"MANAGER"})
+    @RolesAllowed({"MANAGER","ADMINISTRATIVE"})
     public ResponseEntity<Void> deleteEquipment(@PathVariable ("equipmentId") String equipmentId){
         try{
             if (!Regex.idValidator(equipmentId).matches()){
@@ -68,7 +68,7 @@ public class EquipmentController {
         }
     }
     @GetMapping(value = "/{equipmentId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    @RolesAllowed({"MANAGER"})
+    @RolesAllowed({"MANAGER","ADMINISTRATIVE"})
     public EquipmentStatus getSelectedEquipment(@PathVariable("equipmentId") String equipmentId){
         if (!Regex.idValidator(equipmentId).matches()){
             return new SelectedErrorStatus(1,"Equipment Code Not Valid");
@@ -77,7 +77,7 @@ public class EquipmentController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @RolesAllowed({"MANAGER"})
+    @RolesAllowed({"MANAGER","ADMINISTRATIVE","SCIENTIST"})
     public List<EquipmentDTO> getAllEquipment(){
         return equipmentService.getAllEquipment();
     }

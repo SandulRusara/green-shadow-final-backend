@@ -25,7 +25,7 @@ public class VehicleController {
     private VehicleService vehicleService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    @RolesAllowed({"MANAGER"})
+    @RolesAllowed({"MANAGER","ADMINISTRATIVE"})
     public ResponseEntity<Void> saveVehicle(@RequestBody VehicleDTO vehicleDTO){
         System.out.println(vehicleDTO);
         try{
@@ -39,13 +39,13 @@ public class VehicleController {
         }
     }
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @RolesAllowed({"MANAGER"})
+    @RolesAllowed({"MANAGER","SCIENTIST","ADMINISTRATIVE"})
     public List<VehicleDTO> getAllVehicles(){
         return vehicleService.getAllVehicle();
     }
 
     @PutMapping(value = "/{vehicleId}",consumes = MediaType.APPLICATION_JSON_VALUE)
-    @RolesAllowed({"MANAGER"})
+    @RolesAllowed({"MANAGER","ADMINISTRATIVE"})
     public ResponseEntity<Void> updateVehicle(@PathVariable ("vehicleId") String vehicleId ,@RequestBody VehicleDTO vehicleDTO){
         try{
             vehicleService.updateVehicle(vehicleId,vehicleDTO);
@@ -59,7 +59,7 @@ public class VehicleController {
     }
 
     @DeleteMapping(value = "/{vehicleId}")
-    @RolesAllowed({"MANAGER"})
+    @RolesAllowed({"MANAGER","ADMINISTRATIVE"})
     public ResponseEntity<Void> deleteVehicle(@PathVariable ("vehicleId") String vehicleId){
         try{
             if (!Regex.idValidator(vehicleId).matches()){
@@ -76,7 +76,7 @@ public class VehicleController {
     }
 
     @GetMapping(value = "/{vehicleId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    @RolesAllowed({"MANAGER"})
+    @RolesAllowed({"MANAGER","ADMINISTRATIVE"})
     public VehicleStatus getSelectedVehicle(@PathVariable("vehicleId") String vehicleId){
         if (!Regex.idValidator(vehicleId).matches()){
             return new SelectedErrorStatus(1,"Vehicle Code Not Valid");

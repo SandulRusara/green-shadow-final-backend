@@ -33,7 +33,7 @@ public class CropController {
 //    private static final Logger log = LoggerFactory.getLogger(CropController.class);
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @RolesAllowed({"MANAGER"})
+    @RolesAllowed({"MANAGER","SCIENTIST"})
     public ResponseEntity<Void> saveCrop(
             @RequestPart("cropName") String cropName,
             @RequestPart("scientificName") String scientificName,
@@ -68,13 +68,13 @@ public class CropController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @RolesAllowed({"MANAGER"})
+    @RolesAllowed({"MANAGER","ADMINISTRATIVE","SCIENTIST"})
     public List<CropDTO> getAllCrops() {
         return cropService.getAllCrop();
     }
 
     @DeleteMapping(value = "/{cropId}")
-    @RolesAllowed({"MANAGER"})
+    @RolesAllowed({"MANAGER","SCIENTIST"})
     public ResponseEntity<Void> deleteCrop(@PathVariable("cropId") String cropId) {
         try {
             if (!Regex.idValidator(cropId).matches()){
@@ -122,7 +122,7 @@ public class CropController {
 
 
     @PutMapping(value = "/{cropId}")
-    @RolesAllowed({"MANAGER"})
+    @RolesAllowed({"MANAGER","SCIENTIST"})
     public void updateCrop(
             @PathVariable("cropId") String cropId,
             @RequestPart("cropName") String cropName,

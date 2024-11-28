@@ -22,7 +22,7 @@ public class FieldController {
     @Autowired
     private FieldService fieldService;
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @RolesAllowed({"MANAGER"})
+    @RolesAllowed({"MANAGER","SCIENTIST"})
     public ResponseEntity<Void> saveField(
             @RequestPart("name") String fieldName,
             @RequestPart("location") String location,

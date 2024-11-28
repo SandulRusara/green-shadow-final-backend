@@ -18,7 +18,7 @@ public class StaffController {
     @Autowired
     private StaffService staffService;
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    @RolesAllowed({"MANAGER"})
+    @RolesAllowed({"MANAGER","ADMINISTRATIVE"})
     public ResponseEntity<Void> saveStaff(@RequestBody StaffDTO staffDTO){
         try{
             if (!Regex.emailValidator(staffDTO.getEmail()).matches()){
@@ -34,4 +34,5 @@ public class StaffController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    // melkata damnna one SCIENTIST mewa danna get all witharai
 }

@@ -22,7 +22,7 @@ public class LogController {
     @Autowired
     private LogService logService;
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @RolesAllowed({"MANAGER"})
+    @RolesAllowed({"MANAGER","SCIENTIST"})
     public ResponseEntity<Void> saveLog(
             @RequestParam("date") String date,
             @RequestParam("logDetails") String logDetails,
@@ -64,26 +64,26 @@ public class LogController {
     }
 
     @GetMapping(value = "/{logId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    @RolesAllowed({"MANAGER"})
+    @RolesAllowed({"MANAGER","SCIENTIST"})
     public LogStatus getSelectedLog(@PathVariable("logId") String logId){
         return null;
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @RolesAllowed({"MANAGER"})
+    @RolesAllowed({"MANAGER","ADMINISTRATIVE","SCIENTIST"})
     public List<LogDTO> getAllLog(){
         return logService.getAllLog();
     }
 
     @DeleteMapping(value = "/{logId}")
-    @RolesAllowed({"MANAGER"})
+    @RolesAllowed({"MANAGER","SCIENTIST"})
     public ResponseEntity<Void> deleteLog(@PathVariable ("logId") String logId){
 
         return null;
     }
 
     @PutMapping(value = "/{logId}")
-    @RolesAllowed({"MANAGER"})
+    @RolesAllowed({"MANAGER","SCIENTIST"})
     public void updateLog(@PathVariable("logId") String logId) throws IOException {
 
     }
