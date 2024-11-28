@@ -1,6 +1,7 @@
 package lk.ijse.demo.service.impl;
 
 import jakarta.transaction.Transactional;
+import lk.ijse.demo.customerStatusCode.SelectedErrorStatus;
 import lk.ijse.demo.dao.CropDAO;
 import lk.ijse.demo.dao.FieldDAO;
 import lk.ijse.demo.dao.StaffDAO;
@@ -151,13 +152,32 @@ public class FieldServiceImpl implements FieldService {
 
     @Override
     public List<FieldDTO> getAllField() throws IOException, ClassNotFoundException {
-        return null;
+        List<FieldDTO> fieldDTOS = new ArrayList<>();
+        for (FieldEntity fieldEntity : fieldDAO.findAll()){
+            List<String> staffCode = new ArrayList<>();
+            List<String> logCode = new ArrayList<>();
+            for (StaffEntity staffEntity : fieldEntity.getStaffList()){
+                staffCode.add(staffEntity.getMemberCode());
+            }
+            for (LogEntity logEntity :fieldEntity.getLogList()){
+                logCode.add(logEntity.getLogCode());
+            }
+            FieldDTO fieldDTO = mapping.toGetAllFieldDTO(fieldEntity);
+            fieldDTO.setMemberCodeList(staffCode);
+            fieldDTO.setLogCodeList(logCode);
+            fieldDTOS.add(fieldDTO);
+        }
+        return fieldDTOS;
     }
 
 
     @Override
     public FieldStatus getSelectedField(String fieldId) {
-        return null;
+        if (fieldDAO.existsById(fieldId)){
+            return mapping.toFieldDTO(fieldDAO.getReferenceById(fieldId));
+        }else {
+            return new SelectedErrorStatus(2,"Field with Code "+fieldId+" not found");
+        }
     }
 
 }
