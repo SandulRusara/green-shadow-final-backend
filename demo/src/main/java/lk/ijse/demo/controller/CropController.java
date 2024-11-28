@@ -19,12 +19,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
+
 @RestController
 @RequestMapping("api/v1/crops")
 @CrossOrigin
 public class CropController {
     @Autowired
     private CropService cropService;
+//    private static final Logger log = LoggerFactory.getLogger(CropController.class);
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> saveCrop(
@@ -80,6 +85,37 @@ public class CropController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+//    @DeleteMapping("/{cropId}")
+//    public ResponseEntity<Void> deleteCrop(@PathVariable String cropId) {
+//        try {
+//            // Validate the cropId
+//            if (!isValidCropId(cropId)) {
+//                return ResponseEntity.badRequest().build();
+//            }
+//
+//            // Delete the crop
+//            cropService.deleteCrop(cropId);
+//
+//            // Return no content if successful
+//            return ResponseEntity.noContent().build();
+//        } catch (CropNotFoundException e) {
+//            // Log the exception and return not found status
+//            log.error("Crop with ID {} not found: {}", cropId, e.getMessage());
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+//        } catch (Exception e) {
+//            // Log unexpected exceptions
+//            log.error("An unexpected error occurred while deleting crop: {}", e.getMessage(), e);
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
+//    }
+//
+//    // Utility function to validate the crop ID
+//    private boolean isValidCropId(String cropId) {
+//        return Regex.idValidator(cropId).matches();
+//    }
+
+
 
     @PutMapping(value = "/{cropId}")
     public void updateCrop(
