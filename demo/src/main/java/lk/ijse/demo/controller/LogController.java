@@ -64,22 +64,26 @@ public class LogController {
     }
 
     @GetMapping(value = "/{logId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @RolesAllowed({"MANAGER"})
     public LogStatus getSelectedLog(@PathVariable("logId") String logId){
         return null;
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @RolesAllowed({"MANAGER"})
     public List<LogDTO> getAllLog(){
         return logService.getAllLog();
     }
 
     @DeleteMapping(value = "/{logId}")
+    @RolesAllowed({"MANAGER"})
     public ResponseEntity<Void> deleteLog(@PathVariable ("logId") String logId){
 
         return null;
     }
 
     @PutMapping(value = "/{logId}")
+    @RolesAllowed({"MANAGER"})
     public void updateLog(@PathVariable("logId") String logId) throws IOException {
 
     }
