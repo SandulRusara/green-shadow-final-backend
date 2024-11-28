@@ -52,6 +52,7 @@ public class EquipmentController {
         }
     }
     @DeleteMapping(value = "/{equipmentId}")
+    @RolesAllowed({"MANAGER"})
     public ResponseEntity<Void> deleteEquipment(@PathVariable ("equipmentId") String equipmentId){
         try{
             if (!Regex.idValidator(equipmentId).matches()){
@@ -67,6 +68,7 @@ public class EquipmentController {
         }
     }
     @GetMapping(value = "/{equipmentId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @RolesAllowed({"MANAGER"})
     public EquipmentStatus getSelectedEquipment(@PathVariable("equipmentId") String equipmentId){
         if (!Regex.idValidator(equipmentId).matches()){
             return new SelectedErrorStatus(1,"Equipment Code Not Valid");
@@ -75,6 +77,7 @@ public class EquipmentController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @RolesAllowed({"MANAGER"})
     public List<EquipmentDTO> getAllEquipment(){
         return equipmentService.getAllEquipment();
     }
