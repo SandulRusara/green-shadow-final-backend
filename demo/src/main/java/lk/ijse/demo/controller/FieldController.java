@@ -1,4 +1,5 @@
 package lk.ijse.demo.controller;
+import jakarta.annotation.security.RolesAllowed;
 import lk.ijse.demo.dto.impl.FieldDTO;
 import lk.ijse.demo.exception.DataPersistException;
 import lk.ijse.demo.service.FieldService;
@@ -21,6 +22,7 @@ public class FieldController {
     @Autowired
     private FieldService fieldService;
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RolesAllowed({"MANAGER"})
     public ResponseEntity<Void> saveField(
             @RequestPart("name") String fieldName,
             @RequestPart("location") String location,

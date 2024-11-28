@@ -1,5 +1,6 @@
 package lk.ijse.demo.controller;
 
+import jakarta.annotation.security.RolesAllowed;
 import lk.ijse.demo.dto.LogStatus;
 import lk.ijse.demo.dto.impl.LogDTO;
 import lk.ijse.demo.exception.DataPersistException;
@@ -21,6 +22,7 @@ public class LogController {
     @Autowired
     private LogService logService;
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RolesAllowed({"MANAGER"})
     public ResponseEntity<Void> saveLog(
             @RequestParam("date") String date,
             @RequestParam("logDetails") String logDetails,
