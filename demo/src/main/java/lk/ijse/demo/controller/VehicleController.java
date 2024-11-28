@@ -1,5 +1,7 @@
 package lk.ijse.demo.controller;
 
+import lk.ijse.demo.customerStatusCode.SelectedErrorStatus;
+import lk.ijse.demo.dto.VehicleStatus;
 import lk.ijse.demo.dto.impl.VehicleDTO;
 import lk.ijse.demo.exception.DataPersistException;
 import lk.ijse.demo.exception.VehicleNotFoundException;
@@ -67,6 +69,20 @@ public class VehicleController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping(value = "/{vehicleId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public VehicleStatus getSelectedVehicle(@PathVariable("vehicleId") String vehicleId){
+        if (!Regex.idValidator(vehicleId).matches()){
+            return new SelectedErrorStatus(1,"Vehicle Code Not Valid");
+        }
+        return vehicleService.getSelectedVehicle(vehicleId);
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<VehicleDTO> getAllVehicle(){
+        return vehicleService.getAllVehicle();
+    }
+
 
 
 }
