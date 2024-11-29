@@ -3,6 +3,7 @@ package lk.ijse.demo.service.impl;
 import jakarta.transaction.Transactional;
 import lk.ijse.demo.customerStatusCode.SelectedErrorStatus;
 import lk.ijse.demo.dao.CropDAO;
+import lk.ijse.demo.dao.EquipmentDAO;
 import lk.ijse.demo.dao.FieldDAO;
 import lk.ijse.demo.dao.StaffDAO;
 import lk.ijse.demo.dto.FieldStatus;
@@ -32,6 +33,8 @@ public class FieldServiceImpl implements FieldService {
     private Mapping mapping;
     @Autowired
     private CropDAO cropDAO;
+//    @Autowired
+//    private EquipmentDAO equipmentDAO;
 
 
     @Override
@@ -77,7 +80,7 @@ public class FieldServiceImpl implements FieldService {
         // Initialize staffEntities and cropEntities lists
         List<StaffEntity> staffEntities = new ArrayList<>();
         List<CropEntity> cropEntities = new ArrayList<>();
-
+       // List<EquipmentEntity>equipmentEntities=new ArrayList<>();
         // Check if MemberCodeList and CropCodeList are not null before iterating
         if (fieldDTO.getMemberCodeList() != null) {
             for (String id : fieldDTO.getMemberCodeList()) {
@@ -86,6 +89,13 @@ public class FieldServiceImpl implements FieldService {
                 }
             }
         }
+//        if (fieldDTO.getEquipmentsList()!=null){
+//            for (String eid :fieldDTO.getEquipmentsList()){
+//                if (equipmentDAO.existsById(eid)){
+//                    equipmentEntities.add(equipmentDAO.getReferenceById(eid));
+//                }
+//            }
+//        }
 
         if (fieldDTO.getCropCodeList() != null) {
             for (String id : fieldDTO.getCropCodeList()) {
@@ -94,6 +104,7 @@ public class FieldServiceImpl implements FieldService {
                 }
             }
         }
+
 
         // Map FieldDTO to FieldEntity
         FieldEntity fieldEntity = mapping.toFieldEntity(fieldDTO);

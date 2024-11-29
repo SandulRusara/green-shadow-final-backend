@@ -27,6 +27,7 @@ public class UserEntity implements SuperEntity, UserDetails {
     private String email;
     private String password;
     @Enumerated(EnumType.STRING)
+    @Column(length =50)
     private Role role;
 
     @Override

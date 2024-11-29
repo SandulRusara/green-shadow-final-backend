@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,9 +32,8 @@ public class CropController {
     @Autowired
     private CropService cropService;
 //    private static final Logger log = LoggerFactory.getLogger(CropController.class);
-
+    @PreAuthorize("hasAnyRole('MANAGER','SCIENTIST')")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @RolesAllowed({"MANAGER","SCIENTIST"})
     public ResponseEntity<Void> saveCrop(
             @RequestPart("cropName") String cropName,
             @RequestPart("scientificName") String scientificName,
@@ -73,8 +73,8 @@ public class CropController {
         return cropService.getAllCrop();
     }
 
+    @PreAuthorize("hasAnyRole('MANAGER','SCIENTIST')")
     @DeleteMapping(value = "/{cropId}")
-    @RolesAllowed({"MANAGER","SCIENTIST"})
     public ResponseEntity<Void> deleteCrop(@PathVariable("cropId") String cropId) {
         try {
             if (!Regex.idValidator(cropId).matches()){
@@ -120,9 +120,8 @@ public class CropController {
 //    }
 
 
-
+    @PreAuthorize("hasAnyRole('MANAGER','SCIENTIST','ADMINISTRATIVE')")
     @PutMapping(value = "/{cropId}")
-    @RolesAllowed({"MANAGER","SCIENTIST"})
     public void updateCrop(
             @PathVariable("cropId") String cropId,
             @RequestPart("cropName") String cropName,

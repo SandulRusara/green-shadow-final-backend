@@ -4,12 +4,16 @@ import jakarta.annotation.security.RolesAllowed;
 import lk.ijse.demo.dto.LogStatus;
 import lk.ijse.demo.dto.impl.LogDTO;
 import lk.ijse.demo.exception.DataPersistException;
+import lk.ijse.demo.exception.FieldNotFoundException;
+import lk.ijse.demo.exception.LogNotFoundException;
 import lk.ijse.demo.service.LogService;
 import lk.ijse.demo.util.IdListConverter;
+import lk.ijse.demo.util.Regex;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -21,8 +25,8 @@ import java.util.List;
 public class LogController {
     @Autowired
     private LogService logService;
+    @PreAuthorize("hasAnyRole('MANAGER','SCIENTIST')")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @RolesAllowed({"MANAGER","SCIENTIST"})
     public ResponseEntity<Void> saveLog(
             @RequestParam("date") String date,
             @RequestParam("logDetails") String logDetails,
@@ -64,8 +68,9 @@ public class LogController {
     }
 
     @GetMapping(value = "/{logId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    @RolesAllowed({"MANAGER","SCIENTIST"})
+    @PreAuthorize("hasAnyRole('MANAGER','SCIENTIST')")
     public LogStatus getSelectedLog(@PathVariable("logId") String logId){
+
         return null;
     }
 
@@ -76,14 +81,21 @@ public class LogController {
     }
 
     @DeleteMapping(value = "/{logId}")
-    @RolesAllowed({"MANAGER","SCIENTIST"})
+    @PreAuthorize("hasAnyRole('MANAGER','SCIENTIST')")
     public ResponseEntity<Void> deleteLog(@PathVariable ("logId") String logId){
-
-        return null;
+        try {
+            if (!Regex.idValidator(logId).matches()){
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            logService.deleteLog(logId);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PutMapping(value = "/{logId}")
-    @RolesAllowed({"MANAGER","SCIENTIST"})
+    @PreAuthorize("hasAnyRole('MANAGER','SCIENTIST')")
     public void updateLog(@PathVariable("logId") String logId) throws IOException {
 
     }

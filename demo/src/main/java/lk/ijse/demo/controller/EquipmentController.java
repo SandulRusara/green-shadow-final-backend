@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,8 +25,8 @@ public class EquipmentController {
     @Autowired
     private EquipmentService equipmentService;
 
+    @PreAuthorize("hasAnyRole('MANAGER','ADMINISTRATIVE')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    @RolesAllowed({"MANAGER","ADMINISTRATIVE"})
     public ResponseEntity<Void> saveEquipment(@RequestBody EquipmentDTO equipmentDTO){
         try{
             equipmentService.saveEquipment(equipmentDTO);
@@ -38,8 +39,8 @@ public class EquipmentController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PreAuthorize("hasAnyRole('MANAGER','ADMINISTRATIVE')")
     @PutMapping(value = "/{equipmentId}",consumes = MediaType.APPLICATION_JSON_VALUE)
-    @RolesAllowed({"MANAGER","ADMINISTRATIVE"})
     public ResponseEntity<Void> updateEquipment(@PathVariable ("equipmentId") String equipmentId ,@RequestBody EquipmentDTO equipmentDTO){
         try{
             equipmentService.updateEquipment(equipmentId,equipmentDTO);
@@ -51,8 +52,8 @@ public class EquipmentController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PreAuthorize("hasAnyRole('MANAGER','ADMINISTRATIVE')")
     @DeleteMapping(value = "/{equipmentId}")
-    @RolesAllowed({"MANAGER","ADMINISTRATIVE"})
     public ResponseEntity<Void> deleteEquipment(@PathVariable ("equipmentId") String equipmentId){
         try{
             if (!Regex.idValidator(equipmentId).matches()){
@@ -67,17 +68,16 @@ public class EquipmentController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PreAuthorize("hasAnyRole('MANAGER','ADMINISTRATIVE')")
     @GetMapping(value = "/{equipmentId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    @RolesAllowed({"MANAGER","ADMINISTRATIVE"})
     public EquipmentStatus getSelectedEquipment(@PathVariable("equipmentId") String equipmentId){
         if (!Regex.idValidator(equipmentId).matches()){
             return new SelectedErrorStatus(1,"Equipment Code Not Valid");
         }
         return equipmentService.getSelectedEquipment(equipmentId);
     }
-
+    @PreAuthorize("hasAnyRole('MANAGER','ADMINISTRATIVE','SCIENTIST')")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @RolesAllowed({"MANAGER","ADMINISTRATIVE","SCIENTIST"})
     public List<EquipmentDTO> getAllEquipment(){
         return equipmentService.getAllEquipment();
     }
