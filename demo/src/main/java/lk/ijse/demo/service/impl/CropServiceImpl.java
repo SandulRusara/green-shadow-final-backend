@@ -172,7 +172,6 @@ public class CropServiceImpl implements CropService {
             byId.get().setCategory(cropDTO.getCategory());
             byId.get().setSeason(cropDTO.getSeason());
             byId.get().setCropImage(cropDTO.getCropImage());
-
         }
     }
 

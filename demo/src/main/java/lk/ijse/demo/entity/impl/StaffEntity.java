@@ -35,6 +35,7 @@ public class StaffEntity {
     @Column(unique = true)
     private String email;
     @Enumerated(EnumType.STRING)
+    @Column(length = 50)
     private Role role;
     @OneToMany(mappedBy = "staff")
     private List<VehicleEntity> vehicleList;

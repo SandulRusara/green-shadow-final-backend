@@ -7,9 +7,7 @@ import lk.ijse.demo.dao.StaffDAO;
 import lk.ijse.demo.dao.VehicleDAO;
 import lk.ijse.demo.dto.StaffStatus;
 import lk.ijse.demo.dto.impl.StaffDTO;
-import lk.ijse.demo.entity.impl.FieldEntity;
-import lk.ijse.demo.entity.impl.StaffEntity;
-import lk.ijse.demo.entity.impl.VehicleEntity;
+import lk.ijse.demo.entity.impl.*;
 import lk.ijse.demo.exception.DataPersistException;
 import lk.ijse.demo.exception.StaffNotFoundException;
 import lk.ijse.demo.service.StaffService;
@@ -113,31 +111,92 @@ public class StaffServiceImpl implements StaffService {
 //        }
 //    }
 
-
-
-
-    protected LocalDate toConvertLocalDate(String date){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d");
-        return LocalDate.parse(date,formatter);
-    }
-
     @Override
     public List<StaffDTO> getAllStaffMember() {
-        return null;
+
+        List<StaffDTO> staffDTOS = new ArrayList<>();
+
+        for (StaffEntity staff : staffDAO.findAll()){
+            List<String> list = new ArrayList<>();
+            List<String> vehicleCodeList = new ArrayList<>();
+            List<String> logCodeList = new ArrayList<>();
+            List<String> equipmentCodeList = new ArrayList<>();
+            for (FieldEntity field : staff.getFieldList()){
+                list.add(field.getFieldCode());
+            }
+            for (VehicleEntity vehicleCodes:staff.getVehicleList()){
+                vehicleCodeList.add(vehicleCodes.getVehicleCode());
+            }
+            for (LogEntity logCode:staff.getLogList()){
+                logCodeList.add(logCode.getLogCode());
+            }
+            for (EquipmentEntity equipmentCode:staff.getEquipmentList()){
+                equipmentCodeList.add(equipmentCode.getEquipmentCode());
+            }
+            StaffDTO staffDTO = mapping.toStaffDTO(staff);
+            staffDTO.setFieldCodeList(list);
+            staffDTO.setVehicleList(vehicleCodeList);
+            staffDTO.setEquipmentList(equipmentCodeList);
+            staffDTO.setLogList(logCodeList);
+            staffDTOS.add(staffDTO);
+        }
+        return staffDTOS;
     }
 
     @Override
     public void deleteStaffMember(String staffId) throws StaffNotFoundException {
-
+        if (staffDAO.existsById(staffId)){
+            StaffEntity staffEntity = staffDAO.getReferenceById(staffId);
+            List<FieldEntity> fieldList = staffEntity.getFieldList();
+            List<VehicleEntity> vehicleList = staffEntity.getVehicleList();
+            List<LogEntity> logList = staffEntity.getLogList();
+            for (FieldEntity field : fieldList){
+                List<StaffEntity> staff = field.getStaffList();
+                staff.remove(staffEntity);
+            }
+            for (VehicleEntity vehicle : vehicleList){
+                vehicle.setStaff(null);
+            }
+            for (LogEntity logs : logList){
+                List<StaffEntity> staff = logs.getStaffList();
+                staff.remove(staffEntity);
+            }
+            staffEntity.getFieldList().clear();
+            staffEntity.getVehicleList().clear();
+            staffEntity.getLogList().clear();
+            staffDAO.delete(staffEntity);
+        }else {
+            throw new StaffNotFoundException("Member Id with" + staffId + "Not found");
+        }
     }
 
     @Override
     public void updateStaffMember(String id, StaffDTO staffDTO) {
-
+        Optional<StaffEntity> tmpMember = staffDAO.findById(id);
+        if (tmpMember.isPresent()){
+            tmpMember.get().setFirstName(staffDTO.getFirstName());
+            tmpMember.get().setLastName(staffDTO.getLastName());
+            tmpMember.get().setJoinedDate(LocalDate.parse(staffDTO.getJoinedDate()));
+            tmpMember.get().setDateOfBirth(LocalDate.parse(staffDTO.getDateOfBirth()));
+            tmpMember.get().setGender(staffDTO.getGender());
+            tmpMember.get().setDesignation(staffDTO.getDesignation());
+            tmpMember.get().setAddressLine1(staffDTO.getAddressLine1());
+            tmpMember.get().setAddressLine2(staffDTO.getAddressLine2());
+            tmpMember.get().setAddressLine3(staffDTO.getAddressLine3());
+            tmpMember.get().setAddressLine4(staffDTO.getAddressLine4());
+            tmpMember.get().setAddressLine5(staffDTO.getAddressLine5());
+            tmpMember.get().setContactNo(staffDTO.getContactNo());
+            tmpMember.get().setEmail(staffDTO.getEmail());
+            tmpMember.get().setRole(staffDTO.getRole());
+        }
     }
 
     @Override
     public StaffStatus getSelectedStaffMember(String staffId) {
         return null;
+    }
+    protected LocalDate toConvertLocalDate(String date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d");
+        return LocalDate.parse(date,formatter);
     }
 }

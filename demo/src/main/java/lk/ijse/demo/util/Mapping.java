@@ -7,23 +7,24 @@ import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 @Component
 public class Mapping {
     @Autowired
     ModelMapper modelMapper;
 
-    public UserEntity toUserEntity(UserDTO userDTO){
-        return modelMapper.map(userDTO,UserEntity.class);
-    }
-
-    public UserDTO toUserDTO(UserEntity userentity){
-        return modelMapper.map(userentity,UserDTO.class);
-    }
-
-    public List<UserDTO> userList(List<UserEntity> userList){
-        return modelMapper.map(userList,new TypeToken<List<UserDTO>>(){}.getType());
-    }
+//    public UserEntity toUserEntity(UserDTO userDTO){
+//        return modelMapper.map(userDTO,UserEntity.class);
+//    }
+//
+//    public UserDTO toUserDTO(UserEntity userentity){
+//        return modelMapper.map(userentity,UserDTO.class);
+//    }
+//
+//    public List<UserDTO> userList(List<UserEntity> userList){
+//        return modelMapper.map(userList,new TypeToken<List<UserDTO>>(){}.getType());
+//    }
 
     public CropEntity toCropEntity(CropDTO cropDTO){
         return modelMapper.map(cropDTO,CropEntity.class);
@@ -43,7 +44,29 @@ public class Mapping {
 
     public EquipmentDTO toEquipmentDTO(EquipmentEntity equipmentEntity){
         return modelMapper.map(equipmentEntity,EquipmentDTO.class);
+
     }
+    public EquipmentDTO toEquipmentDTOGetAll(EquipmentEntity equipmentEntity){
+        List<String> staffCodes = new ArrayList<>();
+        for (StaffEntity staffEntity : equipmentEntity.getStaffCodeList()){
+            staffCodes.add(staffEntity.getMemberCode());
+        }
+        List<String> fieldCodeList = new ArrayList<>();
+        for (FieldEntity fieldEntity :equipmentEntity.getFieldList()) {
+            fieldCodeList.add(fieldEntity.getFieldCode());
+        }
+        EquipmentDTO equipmentDTO = new EquipmentDTO(
+                equipmentEntity.getEquipmentCode(),
+                equipmentEntity.getName(),
+                equipmentEntity.getType(),
+                equipmentEntity.getStatus(),
+                equipmentEntity.getAvailableCount(),
+                staffCodes,
+                fieldCodeList);
+        return equipmentDTO;
+
+    }
+
 
     public List<EquipmentDTO> equipmentList(List<EquipmentEntity> equipmentEntities){
         return modelMapper.map(equipmentEntities,new TypeToken<List<EquipmentDTO>>(){}.getType());
@@ -88,6 +111,32 @@ public class Mapping {
 
     public List<LogDTO> logList(List<LogDTO> logDTO){
         return modelMapper.map(logDTO,new TypeToken<List<LogDTO>>(){}.getType());
+
+    }
+    public LogDTO toLogGetAll(LogEntity logEntity){
+        List<String> staffCodes = new ArrayList<>();
+        for (StaffEntity staffEntity : logEntity.getStaffList()){
+            staffCodes.add(staffEntity.getMemberCode());
+        }
+        List<String> fieldCodeList = new ArrayList<>();
+        for (FieldEntity fieldEntity :logEntity.getFieldList()) {
+            fieldCodeList.add(fieldEntity.getFieldCode());
+        }
+        List<String> cropList = new ArrayList<>();
+        for (CropEntity cropEntity: logEntity.getCropList()) {
+            cropList.add(cropEntity.getCropCode());
+
+        }
+        LogDTO logDTO = new LogDTO(
+                logEntity.getLogCode(),
+                logEntity.getDate(),
+                logEntity.getLogDetails(),
+                logEntity.getObservedImage(),
+                staffCodes,
+                fieldCodeList,
+                cropList
+        );
+        return logDTO;
     }
 
     public StaffEntity toStaffEntity(StaffDTO staffDTO){

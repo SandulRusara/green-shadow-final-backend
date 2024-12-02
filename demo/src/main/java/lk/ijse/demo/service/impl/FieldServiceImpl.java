@@ -129,16 +129,67 @@ public class FieldServiceImpl implements FieldService {
             byId.get().setExtentSize(fieldDTO.getExtentSize());
             byId.get().setFieldImage1(fieldDTO.getFieldImage1());
             byId.get().setFieldImage2(fieldDTO.getFieldImage2());
-            List<CropEntity> cropEntities = new ArrayList<>();
+
+            List<StaffEntity> staffList = byId.get().getStaffList();
+            List<CropEntity> cropList = byId.get().getCropList();
+//            List<EquipmentEntity> equipmentsList = byId.get().getEquipments_list();
+
+            FieldEntity referenceById = fieldDAO.getReferenceById(fieldDTO.getFieldCode());
+
+            for (StaffEntity staff : staffList) {
+                List<FieldEntity> fieldsList = staff.getFieldList();
+                fieldsList.remove(referenceById);
+            }
+            for (CropEntity cropEntity : cropList) {
+                List<FieldEntity> fieldList = cropEntity.getFieldList();
+                fieldList.remove(referenceById);
+            }
+//            for (EquipmentEntity equipmentEntity : equipmentsList) {
+//                List<FieldEntity> fieldList = equipmentEntity.getField_list();
+//                fieldList.remove(referenceById);
+//            }
+
+            byId.get().getStaffList().clear();
+            byId.get().getCropList().clear();
+//            byId.get().getEquipments_list().clear();
+
             List<StaffEntity> staffEntities = new ArrayList<>();
-            for (String cropCode:fieldDTO.getCropCodeList()){
-                cropEntities.add(cropDAO.getReferenceById(cropCode));
+            List<CropEntity> cropEntities = new ArrayList<>();
+//            List<EquipmentEntity> equipmentEntities = new ArrayList<>();
+
+            for (String staffId : fieldDTO.getMemberCodeList()) {
+                if (staffDAO.existsById(staffId)) {
+                    staffEntities.add(staffDAO.getReferenceById(staffId));
+                }
             }
-            for (String memberCode:fieldDTO.getMemberCodeList()){
-                staffEntities.add(staffDAO.getReferenceById(memberCode));
+            for (String cropId : fieldDTO.getCropCodeList()) {
+                if (cropDAO.existsById(cropId)) {
+                    cropEntities.add(cropDAO.getReferenceById(cropId));
+                }
             }
-            byId.get().setCropList(cropEntities);
-            byId.get().setStaffList(staffEntities);
+
+            byId.get().getStaffList().addAll(staffEntities);
+            byId.get().getCropList().addAll(cropEntities);
+//            byId.get().getEquipments_list().addAll(equipmentEntities);
+
+//            for (EquipmentEntity equipmentEntity : equipmentEntities) {
+//                equipmentEntity.getField_list().add(fieldEntity);
+//            }
+            for (CropEntity cropEntity : cropEntities) {
+                cropEntity.getFieldList().add(referenceById);
+            }
+
+
+
+
+//            for (String cropCode:fieldDTO.getCropCodeList()){
+//                cropEntities.add(cropDAO.getReferenceById(cropCode));
+//            }
+//            for (String memberCode:fieldDTO.getMemberCodeList()){
+//                staffEntities.add(staffDAO.getReferenceById(memberCode));
+//            }
+//            byId.get().setCropList(cropEntities);
+//            byId.get().setStaffList(staffEntities);
         }
     }
 

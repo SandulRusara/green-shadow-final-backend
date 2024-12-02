@@ -7,14 +7,16 @@ import lk.ijse.demo.exception.DataPersistException;
 import lk.ijse.demo.exception.FieldNotFoundException;
 import lk.ijse.demo.exception.LogNotFoundException;
 import lk.ijse.demo.service.LogService;
+import lk.ijse.demo.util.IdGenerate;
 import lk.ijse.demo.util.IdListConverter;
 import lk.ijse.demo.util.Regex;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,12 +27,12 @@ import java.util.List;
 public class LogController {
     @Autowired
     private LogService logService;
-    @PreAuthorize("hasAnyRole('MANAGER','SCIENTIST')")
+//    @PreAuthorize("hasAnyRole('MANAGER','SCIENTIST')")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> saveLog(
             @RequestParam("date") String date,
             @RequestParam("logDetails") String logDetails,
-            @RequestParam("observedImage") String observedImage,
+            @RequestParam("observedImage") MultipartFile observedImage,
             @RequestParam("staffList") String staffList,
             @RequestParam("cropList") String cropList,
             @RequestParam("fieldList") String fieldList
@@ -51,10 +53,12 @@ public class LogController {
             LogDTO logDTO = new LogDTO();
             logDTO.setDate(date);
             logDTO.setLogDetails(logDetails);
-            logDTO.setObservedImage(observedImage);
+            logDTO.setObservedImage(IdGenerate.imageBase64(observedImage.getBytes()));
+           // logDTO.setObservedImage(observedImage);
             logDTO.setStaffList(staffListt);
             logDTO.setCropList(cropListt);
             logDTO.setFieldList(fieldListt);
+            System.out.println(logDTO);
             logService.saveLog(logDTO);
             return new ResponseEntity<>(HttpStatus.CREATED);
         }catch (DataPersistException e){
@@ -68,7 +72,7 @@ public class LogController {
     }
 
     @GetMapping(value = "/{logId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAnyRole('MANAGER','SCIENTIST')")
+//    @PreAuthorize("hasAnyRole('MANAGER','SCIENTIST')")
     public LogStatus getSelectedLog(@PathVariable("logId") String logId){
 
         return null;
@@ -81,7 +85,7 @@ public class LogController {
     }
 
     @DeleteMapping(value = "/{logId}")
-    @PreAuthorize("hasAnyRole('MANAGER','SCIENTIST')")
+//    @PreAuthorize("hasAnyRole('MANAGER','SCIENTIST')")
     public ResponseEntity<Void> deleteLog(@PathVariable ("logId") String logId){
         try {
             if (!Regex.idValidator(logId).matches()){
@@ -94,9 +98,64 @@ public class LogController {
         }
     }
 
-    @PutMapping(value = "/{logId}")
-    @PreAuthorize("hasAnyRole('MANAGER','SCIENTIST')")
-    public void updateLog(@PathVariable("logId") String logId) throws IOException {
+    @PutMapping(value = "/{logId}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    @PreAuthorize("hasAnyRole('MANAGER','SCIENTIST')")
+    public ResponseEntity<Void> updateLog(
+            @PathVariable(value = "logId") String logId,
+            @RequestParam(value = "date") String date,
+            @RequestParam(value = "logDetails") String logDetails,
+            @RequestParam(value = "observedImage") MultipartFile observedImage,
+            @RequestParam(value = "staffList") String staffList,
+            @RequestParam(value = "cropList") String cropList,
+            @RequestParam(value = "fieldList") String fieldList
+    ) throws IOException {
+        List<String> staffId = new ArrayList<>();
+        List<String> cropId = new ArrayList<>();
+        List<String> fieldId = new ArrayList<>();
+
+        if (staffList != null) {
+            staffId = IdListConverter.spiltLists(staffList);
+        }
+        if (cropList != null) {
+            cropId = IdListConverter.spiltLists(cropList);
+        }
+        if (fieldList != null) {
+            fieldId = IdListConverter.spiltLists(fieldList);
+        }
+        String base64Img1;
+        byte[] bytes = observedImage.getBytes();
+
+        base64Img1 = IdGenerate.imageBase64(bytes);
+//        LogDTO logDTO = new LogDTO(
+//                logId,
+//                date,
+//                logDetails,
+//                base64Img1,
+//                new ArrayList<>(),staffId,
+//                new ArrayList<>(),cropId,
+//                new ArrayList<>(),fieldId
+//        );
+
+        try {
+          //  logService.updateLog(logId, logDTO);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (DataPersistException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+
+//        LogDTO logDTO = new LogDTO();
+//        logDTO.setLogCode(logId);
+//        logDTO.setDate(date);
+//        logDTO.setLogDetails(logDetails);
+//        logDTO.setObservedImage(observedImage);
+//        logDTO.setStaffList(staffList);
+//        logDTO.setCropList(cropList);
+//        logDTO.setFieldList(fieldList);
+//        logService.updateLog(logId,logDTO);
+//        System.out.println(logDTO);
 
     }
 }
