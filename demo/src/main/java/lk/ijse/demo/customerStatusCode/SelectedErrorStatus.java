@@ -13,3 +13,4 @@ public class SelectedErrorStatus implements CropStatus, EquipmentStatus, FieldSt
     private Integer status;
     private String statusMessage;
 }
+

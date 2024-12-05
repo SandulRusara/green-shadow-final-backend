@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,7 +29,7 @@ public class FieldController {
     @Autowired
     private FieldService fieldService;
 
-//    @PreAuthorize("hasAnyRole('MANAGER','SCIENTIST')")
+    @PreAuthorize("hasAnyRole('MANAGER','SCIENTIST')")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> saveField(
             @RequestPart("name") String fieldName,
@@ -79,11 +80,12 @@ public class FieldController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PreAuthorize("hasAnyRole('MANAGER','SCIENTIST')")
     @GetMapping(value = "/{fieldId}",produces = MediaType.APPLICATION_JSON_VALUE)
     public FieldStatus getSelectedField(@PathVariable("fieldId") String fieldId){
         return fieldService.getSelectedField(fieldId);
     }
-
+    @PreAuthorize("hasAnyRole('MANAGER','SCIENTIST')")
     @GetMapping
     public List<FieldDTO> getAllField(){
         try {
@@ -93,7 +95,7 @@ public class FieldController {
             return new ArrayList<>();
         }
     }
-
+    @PreAuthorize("hasAnyRole('MANAGER','SCIENTIST')")
     @DeleteMapping(value = "/{fieldId}")
     public ResponseEntity<Void> deleteField(@PathVariable ("fieldId") String fieldId){
         try {
@@ -109,7 +111,7 @@ public class FieldController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @PreAuthorize("hasAnyRole('MANAGER','SCIENTIST')")
     @PutMapping(value = "/{fieldId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> updateField(
             @PathVariable("fieldId") String fieldId,
