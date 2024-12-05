@@ -85,7 +85,7 @@ public class FieldController {
     public FieldStatus getSelectedField(@PathVariable("fieldId") String fieldId){
         return fieldService.getSelectedField(fieldId);
     }
-    @PreAuthorize("hasAnyRole('MANAGER','SCIENTIST')")
+    @PreAuthorize("hasAnyRole('MANAGER','SCIENTIST','SCIENTIST')")
     @GetMapping
     public List<FieldDTO> getAllField(){
         try {

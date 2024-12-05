@@ -31,7 +31,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final AuthenticationManager authenticationManager;
     @Override
     public JwtAuthResponse signUp(SignUp signUp) {
-        System.out.println("AMODH D D D DD D D ");
         UserEntity lastRowNative = userDAO.findLastRowNative();
         int number =0;
 
